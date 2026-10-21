@@ -49,6 +49,9 @@ main{padding-top:22px;padding-bottom:20px}
 .z b{font-size:17px}
 .z.leeg{background:transparent;border-style:dashed;color:var(--grijs)}
 .z .vlag{font-size:12px;font-weight:700;color:var(--amber);margin-left:3px}
+a.z{display:block;color:inherit;text-decoration:none;position:relative}
+a.z::after{content:"›";position:absolute;right:8px;top:6px;color:var(--blauw);font-weight:700}
+a.z:hover,a.z:focus-visible{border-color:var(--blauw);box-shadow:0 0 0 2px var(--blauw-rand)}
 .detail p{margin:12px 0 0;font-size:15px;color:var(--grijs)}
 .uitleg{margin-top:16px;border:1px solid var(--lijn);border-radius:14px;padding:4px 18px}
 .uitleg summary{cursor:pointer;font-weight:700;color:var(--blauw);padding:12px 0;min-height:44px}
@@ -111,7 +114,7 @@ main{padding-top:22px;padding-bottom:20px}
     <div class="lijstkop"><span>Plaats</span><span>Speler</span><span class="r">Zittingen</span><span class="r">Gem. %</span><span></span></div>
     <div id="rijen"><p class="leeg-lijst">Ranking laden…</p></div>
   </div>
-  <p class="muted" style="font-size:15px;margin:14px 0 0">Tik op een naam voor de scores per zitting. Een plaats tussen haakjes in de pdf (gedeelde plaats) staat hier als "gedeeld". <strong>m</strong> = minder spellen gespeeld.</p>
+  <p class="muted" style="font-size:15px;margin:14px 0 0">Tik op een naam voor de scores per zitting, en op een score (met ›) voor je uitslag van die zitting. Een plaats tussen haakjes in de pdf (gedeelde plaats) staat hier als "gedeeld". <strong>m</strong> = minder spellen gespeeld.</p>
   <details class="uitleg">
     <summary>Hoe werkt de ranking?</summary>
     <ul>
@@ -144,6 +147,16 @@ main{padding-top:22px;padding-bottom:20px}
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   function nl(n) { return Number(n).toFixed(2).replace('.', ','); }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  /* "20-okt" + competitie "Dinsdag 2026-2027" -> "2026-10-20-di" als die zitting online staat */
+  function zittingId(r, d) {
+    var m = /^(\d{1,2})-([a-z]+)/.exec(d || ''); if (!m) return null;
+    var mi = MAAND.indexOf(m[2].slice(0, 3)); if (mi < 0) return null;
+    var j = /(\d{4})\D+(\d{4})/.exec(r.competitie || '');
+    var jaar = j ? (mi >= 7 ? j[1] : j[2]) : (r.stand_op || '').slice(0, 4);
+    var id = jaar + '-' + pad(mi + 1) + '-' + pad(+m[1]) + '-' + r.dag;
+    return (window.ZITTINGEN || []).some(function (z) { return z.id === id; }) ? id : null;
+  }
   function datum(iso) { if (!iso) return ''; var d = new Date(iso + 'T12:00:00'); return d.getDate() + ' ' + MAAND[d.getMonth()] + ' ' + d.getFullYear(); }
 
   function toon() {
@@ -162,7 +175,10 @@ main{padding-top:22px;padding-bottom:20px}
         var x = perZ[z.nr];
         if (!x) return '<div class="z leeg"><span>' + esc(z.datum || ('Zitting ' + z.nr)) + '</span>–</div>';
         var vl = x.v ? '<abbr class="vlag" title="' + (x.v.indexOf('m') >= 0 ? 'minder spellen gespeeld' : 'opmerking') + '">' + esc(x.v) + '</abbr>' : '';
-        return '<div class="z"><span>' + esc(z.datum || ('Zitting ' + z.nr)) + '</span><b>' + nl(x.s) + '%</b>' + vl + '</div>';
+        var zid = zittingId(r, z.datum);
+        var inhoud = '<span>' + esc(z.datum || ('Zitting ' + z.nr)) + '</span><b>' + nl(x.s) + '%</b>' + vl;
+        if (zid) return '<a class="z" href="uitslagen.html#/' + zid + '/speler/' + encodeURIComponent(s.naam) + '/' + x.s + '" title="Bekijk je uitslag van deze zitting">' + inhoud + '</a>';
+        return '<div class="z" title="Deze zitting staat nog niet online">' + inhoud + '</div>';
       }).join('');
       var beste = s.scores.length ? Math.max.apply(null, s.scores.map(function (x) { return x.s; })) : 0;
       return '<div class="item' + (open === id ? ' open' : '') + '" data-id="' + id + '">' +
@@ -191,6 +207,7 @@ main{padding-top:22px;padding-bottom:20px}
   toon();
 })();
 </script>
+<script src="data/zittingen.js"></script>
 <script src="data/ranking-di.js"></script>
 <script src="data/ranking-wo.js"></script>
 </body>

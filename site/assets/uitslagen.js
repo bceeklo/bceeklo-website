@@ -65,6 +65,11 @@
     var zid = r.z || lijst[0].id;
     var z = cache[zid];
     if (!z) { laad(zid); return; }
+    if (r.soort === 'speler') {  /* vanuit de ranking: zoek het paar van deze speler */
+      var pid = zoekPaar(z, r.id, r.van);
+      location.replace('#/' + zid + (pid ? '/paar/' + pid : ''));
+      return;
+    }
     var html;
     if (r.soort === 'paar' && z.paarIdx[r.id]) html = paarView(z, r.id);
     else if (r.soort === 'spel') html = spelView(z, parseInt(r.id, 10), r.van);
@@ -74,6 +79,26 @@
     if (sel) sel.onchange = function () { location.hash = '#/' + sel.value; };
     var h1 = app.querySelector('h1');
     document.title = (h1 ? h1.textContent + ' · ' : '') + 'Uitslagen · Bridgeclub Eeklo';
+  }
+
+  function plat(t) { return String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim(); }
+  /* "Hugo De la Ruelle" in "De Backer, Wolfgang & De la Ruelle, Hugo"; anders op percentage */
+  function zoekPaar(z, naam, pct) {
+    var doel = plat(naam), p, i;
+    for (i = 0; i < z.paren.length; i++) {
+      p = z.paren[i];
+      var hit = String(p.naam).split('&').some(function (helft) {
+        var d = helft.split(',');
+        return plat(d.length > 1 ? d[1] + ' ' + d[0] : helft) === doel;
+      });
+      if (hit) return p.id;
+    }
+    var v = parseFloat(pct);
+    if (!isNaN(v)) {
+      var zelfde = z.paren.filter(function (q) { return Math.abs(q.pct - v) < 0.005; });
+      if (zelfde.length === 1) return zelfde[0].id;
+    }
+    return null;
   }
 
   function naamZ(z) { return z.titel || z.zitting; }
