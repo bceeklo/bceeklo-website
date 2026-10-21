@@ -64,6 +64,14 @@ window.ZITTINGEN = [
   "winnaar": "Arnou & Laureyns"
  },
  {
+  "id": "2026-09-16-wo",
+  "datum": "2026-09-16",
+  "zitting": "Wo Z 3",
+  "paren": 17,
+  "spellen": 28,
+  "winnaar": "Formesyn & Seghers"
+ },
+ {
   "id": "2026-09-15-di",
   "datum": "2026-09-15",
   "zitting": "Di Z 3",
@@ -72,12 +80,28 @@ window.ZITTINGEN = [
   "winnaar": "Verstuyft & Van Daele"
  },
  {
+  "id": "2026-09-09-wo",
+  "datum": "2026-09-09",
+  "zitting": "WOE Z 2",
+  "paren": 16,
+  "spellen": 28,
+  "winnaar": "Laureyns & Arnou"
+ },
+ {
   "id": "2026-09-08-di",
   "datum": "2026-09-08",
   "zitting": "Di Z2",
   "paren": 27,
   "spellen": 28,
   "winnaar": "Laureyns & Arnou"
+ },
+ {
+  "id": "2026-09-02-wo",
+  "datum": "2026-09-02",
+  "zitting": "Wo Z 1",
+  "paren": 16,
+  "spellen": 28,
+  "winnaar": "Balthau & De la Ruelle"
  },
  {
   "id": "2026-09-01-di",
