@@ -5,7 +5,7 @@ Automatische verwerking van uitslagen voor bceeklo.be.
 Leest alle pdf's uit de map  "Uitslagen website/Nieuw"  (Google Drive), herkent zelf wat elk bestand is
 en zet het om naar data voor de website:
 
-  * Verzamelstaat + Frequentiestaat van dezelfde zitting  -> clubdrive, Kroegendrive of recreantentornooi
+  * Verzamelstaat + Frequentiestaat van dezelfde zitting  -> clubdrive, Kroegendrive, Drive Gilbert of recreantentornooi
   * Individuele competitiestand                           -> ranking dinsdag / woensdag
 
 Gelukt  -> bestanden gaan naar "Verwerkt".
@@ -40,6 +40,7 @@ from ranking_naar_data import zet_om_ranking  # noqa: E402
 SITE = Path(__file__).resolve().parent.parent / "site"
 WACHTTIJD_UUR = 12
 KROEGENDRIVE_EERSTE_JAAR = 2015  # 1ste editie; 2025 = 11de
+GILBERT_EERSTE_JAAR = 2023      # 4de Drive Gilbert = juni 2026
 
 
 # ------------------------------------------------------------------ bronnen
@@ -160,6 +161,9 @@ def reeks_en_titel(zitting, datum):
     if "kroeg" in z:
         editie = int(datum[:4]) - KROEGENDRIVE_EERSTE_JAAR + 1
         return "kroegendrive", f"{rangtelwoord(editie)} Kroegendrive"
+    if "gilbert" in z:
+        editie = int(datum[:4]) - GILBERT_EERSTE_JAAR + 1
+        return "gilbert", f"{rangtelwoord(editie)} Drive Gilbert"
     if "recr" in z:
         return "recreanten", "Recreantentornooi"
     if re.match(r"(di|wo)", z):
@@ -232,7 +236,7 @@ def verwerk(bron, site=SITE, nu=None):
             reeks, titel = reeks_en_titel(zitting, datum)
             if reeks is None:
                 fout([s, q], f"Onbekende soort zitting: '{zitting}'. Verwacht een dinsdag-/woensdagzitting, "
-                             "Kroegendrive of recreantentornooi.")
+                             "Kroegendrive, Drive Gilbert of recreantentornooi.")
                 continue
             try:
                 melding, fouten = zet_om(s["pad"], q["pad"], site, reeks, titel)

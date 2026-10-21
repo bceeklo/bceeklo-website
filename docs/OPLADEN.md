@@ -9,7 +9,7 @@
 
 **De ranking**: sla de *Individuele competitiestand* op als pdf en sleep ook die in **Nieuw**.
 
-**Kroegendrive of recreantentornooi**: precies hetzelfde. De website herkent zelf wat het is.
+**Kroegendrive, Drive Gilbert of recreantentornooi**: precies hetzelfde. De website herkent zelf wat het is.
 
 **Is het gelukt?**
 

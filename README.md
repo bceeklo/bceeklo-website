@@ -8,7 +8,7 @@ opgehaald uit Google Drive en omgezet.
 | Map / bestand | Wat |
 |---|---|
 | `site/` | De website zelf (dit is wat online staat) |
-| `site/data/` | Uitslagen, ranking, Kroegendrive, recreantentornooi (wordt door de robot bijgewerkt) |
+| `site/data/` | Uitslagen, ranking, Kroegendrive, Drive Gilbert, recreantentornooi (wordt door de robot bijgewerkt) |
 | `tools/pdf_naar_data.py` | Zet verzamelstaat + frequentiestaat van Bridge-It om |
 | `tools/ranking_naar_data.py` | Zet de individuele competitiestand om |
 | `tools/verwerk_drive.py` | Haalt nieuwe pdf's uit Google Drive en verwerkt ze automatisch |
@@ -42,7 +42,7 @@ Daarna **Commit** en **Push** in GitHub Desktop; Netlify zet het online.
 Op basis van de inhoud, niet de bestandsnaam:
 
 - "Verzamelstaat"/"Zittingsuitslag" + "Frequentiestaat" met dezelfde *Zitting* en *Datum* vormen een paar.
-- Zitting begint met *Di*/*Wo* → clubdrive; bevat *kroeg* → Kroegendrive (editie = jaar − 2014);
+- Zitting begint met *Di*/*Wo* → clubdrive; bevat *kroeg* → Kroegendrive (editie = jaar − 2014); bevat *gilbert* → Drive Gilbert (editie = jaar − 2022);
   bevat *recr* → recreantentornooi.
 - "Individuele competitiestand" → ranking (dinsdag of woensdag volgens de competitienaam).
 - Elke omzetting wordt gecontroleerd (matchpunten per paar = stand). Klopt het niet → map **Fout**,

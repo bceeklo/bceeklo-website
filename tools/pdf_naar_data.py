@@ -259,7 +259,7 @@ def main():
     ap.add_argument("verzamelstaat")
     ap.add_argument("frequentiestaat")
     ap.add_argument("--site", default="site", help="map van de website (standaard: site)")
-    ap.add_argument("--reeks", default="", help="kroegendrive of recreanten (leeg = gewone clubdrive)")
+    ap.add_argument("--reeks", default="", help="kroegendrive, gilbert of recreanten (leeg = gewone clubdrive)")
     ap.add_argument("--titel", default="", help='naam van het tornooi, bv. "11de Kroegendrive"')
     if len(sys.argv) < 3:
         print(__doc__)
