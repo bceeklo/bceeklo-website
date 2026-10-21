@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Onze club · Bridgeclub Eeklo</title>
+<meta name="description" content="Geschiedenis, bestuur, clubreglement, clubkampioenen, ranking, evenementen en persartikels van Bridgeclub Eeklo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Cinzel:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<link rel="icon" type="image/png" href="assets/img/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<meta name="theme-color" content="#0B2347">
+<meta property="og:title" content="Onze club · Bridgeclub Eeklo">
+<meta property="og:image" content="assets/img/og-image.jpg">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.paginakop{background:var(--blauw);color:#fff}
+.paginakop .wrap{padding-top:48px;padding-bottom:48px}
+.paginakop h1{margin:6px 0 10px;font-size:clamp(36px,5vw,54px)}
+.paginakop p{margin:0;color:#E3E9F2;max-width:40em;font-size:20px}
+.paginakop .label{color:var(--goud-licht)}
+.inhoud{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.inhoud a{color:#fff;text-decoration:none;border:1px solid rgba(229,201,135,.5);padding:8px 14px;border-radius:999px;font-size:16px}
+.inhoud a:hover{background:rgba(255,255,255,.08);color:#fff}
+section.blok{padding-top:64px;scroll-margin-top:90px}
+section.blok h2{margin:0 0 8px;font-size:clamp(28px,4vw,38px)}
+section.blok h2::after{content:"";display:block;width:56px;height:3px;background:var(--goud);margin-top:12px}
+.intro2{margin:0 0 24px;color:var(--grijs);max-width:44em}
+.tijdlijn{list-style:none;margin:0;padding:0;border-left:3px solid var(--goud-zacht);display:flex;flex-direction:column;gap:22px}
+.tijdlijn li{position:relative;padding-left:26px}
+.tijdlijn li::before{content:"";position:absolute;left:-9px;top:6px;width:15px;height:15px;border-radius:50%;background:#fff;border:3px solid var(--goud)}
+.tijdlijn h3{margin:0 0 4px;font-size:22px;color:var(--blauw)}
+.tijdlijn p{margin:0 0 6px;max-width:46em}
+.doc{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--inkt);border:1px solid var(--lijn);border-radius:14px;padding:14px 18px;min-height:60px}
+.doc:hover{border-color:var(--blauw-rand);background:var(--blauw-licht);color:var(--inkt)}
+.doc svg{flex:none}
+.doc b{display:block}
+.doc span{color:var(--grijs);font-size:15px}
+.docs{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+table.kamp{width:100%;border-collapse:collapse;font-size:17px}
+table.kamp th,table.kamp td{text-align:left;padding:11px 14px;border-bottom:1px solid #EEF0F1;vertical-align:top}
+table.kamp th{font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:var(--grijs);background:#FAFBFB}
+table.kamp td:first-child{font-weight:700;white-space:nowrap;color:var(--blauw)}
+.tabelbox{border:1px solid var(--lijn);border-radius:18px;overflow:auto}
+.muted-rij td{color:var(--grijs)}
+.placeholder{background:var(--goud-zacht);border:1px dashed var(--goud);border-radius:14px;padding:16px 20px;color:#5C4A1E}
+.pers{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.pers li{border:1px solid var(--lijn);border-radius:14px;padding:14px 18px}
+.pers .jaar{font-family:var(--display);font-weight:700;color:var(--goud);font-size:18px}
+.bestuur{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.bestuur li{border:1px solid var(--lijn);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:2px}
+.bestuur .functie{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--goud)}
+.bestuur b{font-family:var(--display);font-size:21px;color:var(--blauw)}
+.bestuur a{font-size:16px;overflow-wrap:anywhere}
+.bestuur li.breed{background:var(--blauw-licht);border-color:var(--blauw-licht)}
+.bestuur li.ere{background:var(--goud-zacht);border-color:var(--goud-zacht)}
+.contactkaart{background:var(--blauw-licht);border-radius:18px;padding:24px;display:flex;flex-direction:column;gap:8px}
+.contactkaart h3{margin:0;font-size:23px}
+.contactkaart p{margin:0}
+</style>
+</head>
+<body>
+<header class="kop">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="assets/img/logo-160.png" alt="" width="56" height="56"><b>Bridgeclub<small>EEKLO</small></b></a>
+    <nav class="menu" aria-label="Hoofdmenu">
+      <a href="index.html#spelen">Spelen</a>
+      <a href="index.html#kalender">Kalender</a>
+      <a href="uitslagen.html">Uitslagen</a>
+      <a href="club.html" aria-current="page">Onze club</a>
+      <a href="index.html#lessen">Bridge leren</a>
+      <a href="index.html#lid">Lid worden</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="paginakop">
+  <div class="wrap">
+    <p class="label">Sinds 2003</p>
+    <h1>Onze club</h1>
+    <p>Van de salons van hotel Shamon tot de kantine van K.F.C. Eeklo: meer dan twintig jaar bridge in Eeklo.</p>
+    <nav class="inhoud" aria-label="Op deze pagina">
+      <a href="#bestuur">Bestuur</a><a href="#geschiedenis">Geschiedenis</a><a href="#reglement">Clubreglement</a>
+      <a href="#pers">In de pers</a><a href="#partner">Partner gezocht</a><a href="#leden">Ledenzone</a><a href="#links">Links</a>
+    </nav>
+  </div>
+</section>
+
+<main class="wrap">
+
+<section class="blok" id="bestuur">
+  <h2>Bestuur</h2>
+  <p class="intro2">Het bestuur bestaat uit vijf tot zeven vrijwilligers, verkozen door de algemene ledenvergadering in juni.</p>
+  <ul class="bestuur">
+    <li><span class="functie">Voorzitter</span><b>Mark Verstuyft</b></li>
+    <li><span class="functie">Ondervoorzitter</span><b>Caroline Audenaert</b></li>
+    <li class="breed"><span class="functie">Secretaris</span><b>Nicole Van Daele</b><a href="tel:+32486167849">0486 16 78 49</a><a href="mailto:nicolevandaele@hotmail.com">nicolevandaele@hotmail.com</a></li>
+    <li><span class="functie">Schatbewaarder</span><b>Ann Wittevrongel</b></li>
+    <li><span class="functie">ICT</span><b>Leon Gossye</b></li>
+    <li><span class="functie">Bestuurslid</span><b>Monique Lacayse</b></li>
+    <li><span class="functie">Bestuurslid</span><b>Dorine Moens</b></li>
+    <li class="ere"><span class="functie">Erevoorzitter</span><b>Wolfgang De Backer</b></li>
+  </ul>
+</section>
+
+<section class="blok" id="geschiedenis">
+  <h2>Geschiedenis</h2>
+  <p class="intro2">Een greep uit meer dan twintig jaar clubleven.</p>
+  <ol class="tijdlijn">
+    <li><h3>2003 – 2004</h3><p>De club wordt opgericht op initiatief van Wolfgang De Backer en een aantal bridgers uit de regio Eeklo. De salons van hotel Shamon doen dienst als clublokaal; de uitslag wordt berekend met het programma "Brigitte".</p></li>
+    <li><h3>2005 – 2007</h3><p>Door het groeiende ledenaantal verhuist de club naar de Starlite bowling- en snookerhal. De club krijgt een eigen pc en organiseert voor het eerst een clubcompetitie.</p></li>
+    <li><h3>2008 – 2017</h3><p>Na de sluiting van de Starlite verhuist de club met de gerant naar het Dzilleken in Lembeke. In 2016 komt de eerste website, en bij de start van seizoen 2017–2018 worden de bridgemates geïntroduceerd.</p></li>
+    <li><h3>2018 – 2019</h3><p>Op 13 maart 2018 verhuist de club naar Taverne De Jachthaven in Eeklo. Het ledenaantal blijft groeien; op 6 november start de club in Brasserie Tamboerke op het Kerkplein. Het reglement wordt aangepast en er komen een nieuwe laptop en printer.</p></li>
+    <li><h3>2019 – 2020</h3><p>Door de coronapandemie stoppen de clubavonden vanaf 17 maart 2020. Veel leden vinden de weg naar online bridge. In juli sluit de club aan bij de Vlaamse Bridge Liga (clubnummer 105016).</p></li>
+    <li><h3>2020 – 2021</h3><p>De club start met bridge op woensdagnamiddag en speelt vanaf 9 september 2020 coronaproof. Restaurant De Zoete Parel wordt het nieuwe clublokaal. Met een eigen dupliceermachine kan de club zelfstandig tornooien organiseren; in juni en augustus 2021 wordt het spelen hervat.</p></li>
+    <li><h3>2021 – 2022</h3><p>Avondcompetitie op dinsdag en namiddagcompetitie op woensdag. Een viertal speelt in Liga 2 van de VBL. Na twee coronajaren sluiten we af met een bingo-bridge, clubmaaltijd en kampioenenhuldiging.</p></li>
+    <li><h3>2022 – 2023</h3><p>De 8ste Kroegendrive verwelkomt 48 paren uit het Meetjesland en Zeeland. Twee viertallen spelen VBL-competitie. Interclubdrives met BC 't Biedtje uit Moerbeke, en een clubdrive bij het afscheid van Gilbert Claeys.</p></li>
+    <li><h3>2023 – 2024</h3><p>De Zoete Parel sluit; op 26 september start de club in de kantine van K.F.C. Eeklo, Zandvleuge 66. De club treedt toe tot de Adviesraad voor Cultuur van Eeklo. De 9de Kroegendrive telt 56 paren. Na 20 jaar voorzitterschap wordt Wolfgang De Backer erevoorzitter; Mark Verstuyft wordt verkozen tot voorzitter.</p></li>
+    <li><h3>2024 – 2025</h3><p>10de Kroegendrive met maximale bezetting, prijsuitreiking voor het eerst in de Luxor. De club organiseert de halve finale van het recreantentornooi. Een viertal wordt kampioen in Liga 1a. Bridgeweekend in Montreuil-sur-Mer en de 3de Drive Gilbert.</p></li>
+    <li><h3>2025 – 2026</h3><p>De namiddagcompetitie start met een A- en een B-lijn. Nieuwe bridgemates III bij de 11de Kroegendrive. Vanaf januari 2026 zijn er in de avondcompetitie om de zes weken drie dalers en drie stijgers tussen de A- en B-lijn.</p></li>
+  </ol>
+  <p style="margin-top:20px"><a href="https://drive.google.com/file/d/16LNwiGG7CI5fVG1t_ssKLg8Ih3WEdx0P/view">Volledige geschiedenis (pdf)</a></p>
+</section>
+
+<section class="blok" id="reglement">
+  <h2>Clubreglement</h2>
+  <p class="intro2">Wie deelneemt aan de activiteiten van de club, aanvaardt het clubreglement. Het reglement ligt ook ter inzage tijdens de clubavonden.</p>
+  <div class="docs">
+    <a class="doc" href="https://drive.google.com/file/d/1iJ0tAhy69Z64IKIwBP3n4YRtJl0kdXed/view">
+      <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0B2347" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+      <div><b>Clubreglement 2024–2025</b><span>pdf · [vervangen door versie 2025–2026]</span></div>
+    </a>
+  </div>
+</section>
+
+
+
+
+<section class="blok" id="pers">
+  <h2>In de pers</h2>
+  <ul class="pers">
+    <li><span class="jaar">2013</span><br><a href="https://drive.google.com/file/d/1uTLjpOKHlpazuYDI02EclqWqzMN0t0AQ/view">10-jarig bestaan</a></li>
+    <li><span class="jaar">2013</span><br><a href="https://drive.google.com/file/d/17VehNKkxjqc__K70au0roedWIR99TkDE/view">Kroegendrive 2013</a></li>
+    <li><span class="jaar">2016</span><br><a href="https://drive.google.com/file/d/1w7aUzwnL41JtMskq8Dgh9Ied-VMpU5ak/view">Bridgeclub Eeklo huldigt beste spelers</a></li>
+    <li><span class="jaar">2017</span><br><a href="https://drive.google.com/file/d/1QzZSAK2RW1W8dLSLAY_cQonDmthSQfD1/view">Kroegendrive december 2017</a></li>
+    <li><span class="jaar">2018</span><br>Bridgeclub verhuist naar Taverne De Jachthaven <span class="muted">[link volgt]</span></li>
+    <li><span class="jaar">2019</span><br>Wegwijzer: verhuis naar het Tamboerke <span class="muted">[link volgt]</span></li>
+    <li><span class="jaar">2022</span><br>Eikenblad 2 · Nieuwsblad 30 mei <span class="muted">[link volgt]</span></li>
+    <li><span class="jaar">2023</span><br>De Zondag 19 maart · Taptoe Meetjesland 23 aug en 6 sep <span class="muted">[link volgt]</span></li>
+  </ul>
+</section>
+
+<section class="blok" id="partner">
+  <div class="raster">
+    <div class="contactkaart">
+      <h3>Partner gezocht?</h3>
+      <p>Stuur een kort bericht: "<em>naam</em> zoekt partner voor <em>datum</em>", met je telefoon, gsm of e-mail.</p>
+      <p><a href="mailto:caroline.audenaert@telenet.be?subject=Partner%20gezocht">caroline.audenaert@telenet.be</a></p>
+    </div>
+    <div class="contactkaart" id="leden">
+      <h3>Ledenzone</h3>
+      <p>Een afgeschermd deel voor leden. Inloggen kan met een (gratis) Google-account.</p>
+      <p><a href="https://sites.google.com/site/ledenbceeklo/">Naar de ledenzone</a></p>
+    </div>
+    <div class="contactkaart" id="suggesties">
+      <h3>Suggesties</h3>
+      <p>Foutje gevonden, persoonlijke gegevens aan te passen of een voorstel tot verbetering? Laat het weten.</p>
+      <p><a href="mailto:leon.gossye@telenet.be?subject=Suggestie%20website">leon.gossye@telenet.be</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="blok" id="links">
+  <h2>Interessante links</h2>
+  <div class="docs">
+    <a class="doc" href="https://www.vbl.be/"><div><b>Vlaamse Bridge Liga</b><span>vbl.be</span></div></a>
+    <a class="doc" href="https://www.bridge.nl/"><div><b>Nederlandse Bridge Bond</b><span>bridge.nl</span></div></a>
+    <a class="doc" href="https://sites.google.com/site/bclievegem/"><div><b>Bridgeclub Lievegem</b><span>onze zusterclub</span></div></a>
+  </div>
+</section>
+</main>
+
+<footer class="voet">
+  <div class="wrap">
+    <div style="flex:2 1 260px"><img class="voet-logo" src="assets/img/logo-160.png" alt="" width="76" height="76"><b style="font-family:var(--merk);font-size:20px;letter-spacing:.04em">Bridgeclub Eeklo</b><br>Recreatieve bridgeclub, aangesloten bij de Vlaamse Bridge Liga.</div>
+    <div style="flex:1 1 160px"><b>Competitie</b><br><a href="uitslagen.html">Uitslagen</a><br><a href="ranking.html">Ranking</a><br><a href="kampioenen.html">Clubkampioenen</a></div>
+    <div style="flex:1 1 160px"><b>Club</b><br><a href="#bestuur">Bestuur</a><br><a href="#reglement">Clubreglement</a><br><a href="#leden">Ledenzone</a></div>
+  </div>
+</footer>
+</body>
+</html>

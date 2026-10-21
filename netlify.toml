@@ -1,0 +1,10 @@
+# Netlify publiceert enkel de map "site". Er is geen build-stap nodig.
+[build]
+  publish = "site"
+  command = ""
+
+# Mooie adressen zonder .html blijven werken (bv. bceeklo.be/uitslagen)
+[[redirects]]
+  from = "/uitslagen"
+  to = "/uitslagen.html"
+  status = 200

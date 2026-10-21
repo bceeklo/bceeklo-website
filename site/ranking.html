@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ranking · Bridgeclub Eeklo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Cinzel:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<link rel="icon" type="image/png" href="assets/img/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<meta name="theme-color" content="#0B2347">
+<meta property="og:title" content="Ranking · Bridgeclub Eeklo">
+<meta property="og:image" content="assets/img/og-image.jpg">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+main{padding-top:22px;padding-bottom:20px}
+.titelrij{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px;margin-bottom:18px}
+.titelrij h1{margin:0;font-size:clamp(30px,5vw,44px)}
+.titelrij p{margin:4px 0 0}
+.tabs{display:flex;gap:6px;background:var(--blauw-licht);padding:5px;border-radius:14px;width:max-content;max-width:100%}
+.tabs button{font:inherit;font-weight:700;font-size:17px;border:0;background:transparent;color:var(--blauw);padding:10px 18px;border-radius:10px;cursor:pointer;min-height:44px}
+.tabs button[aria-selected="true"]{background:var(--blauw);color:#fff}
+.info{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;margin:16px 0 14px;color:var(--grijs);font-size:16px}
+.zoek{display:flex;align-items:center;gap:8px;border:1px solid var(--lijn);border-radius:12px;padding:0 12px;max-width:360px;margin-bottom:14px;background:#fff}
+.zoek input{font:inherit;border:0;outline:0;padding:10px 0;min-height:44px;flex:1;min-width:0;background:transparent;color:var(--inkt)}
+.zoek:focus-within{border-color:var(--blauw)}
+.lijst{border:1px solid var(--lijn);border-radius:18px;overflow:hidden}
+.lijstkop,.rij{display:grid;grid-template-columns:56px minmax(0,1fr) 92px 92px 28px;gap:10px;align-items:center;padding:10px 18px}
+.lijstkop{background:#FAFBFB;font-size:14px;font-weight:700;color:var(--grijs);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--lijn)}
+.item{border-bottom:1px solid #EEF0F1}
+.item:last-child{border-bottom:0}
+.rij{width:100%;font:inherit;color:var(--inkt);background:#fff;border:0;text-align:left;cursor:pointer;min-height:56px}
+.rij:hover,.rij:focus-visible{background:var(--blauw-licht)}
+.rang{font-family:var(--display);font-weight:700;font-size:21px;text-align:center}
+.rang.top{color:#fff;background:var(--blauw);border-radius:10px;padding:2px 0}
+.rang small{display:block;font-family:var(--tekst);font-weight:400;font-size:11px;color:var(--grijs);line-height:1}
+.rang.top small{color:#D4DDEB}
+.naam{font-weight:700;overflow-wrap:anywhere}
+.r{text-align:right;font-variant-numeric:tabular-nums}
+.gem{font-weight:700;font-size:18px}
+.pijl{color:var(--grijs);transition:transform .15s;text-align:center}
+.item.open .pijl{transform:rotate(90deg)}
+.item.open .rij{background:var(--blauw-licht)}
+.detail{display:none;padding:6px 18px 18px;background:var(--blauw-licht)}
+.item.open .detail{display:block}
+.zittingen{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.z{background:#fff;border:1px solid var(--blauw-rand);border-radius:10px;padding:8px 10px;font-variant-numeric:tabular-nums}
+.z span{display:block;font-size:13px;color:var(--grijs)}
+.z b{font-size:17px}
+.z.leeg{background:transparent;border-style:dashed;color:var(--grijs)}
+.z .vlag{font-size:12px;font-weight:700;color:var(--amber);margin-left:3px}
+.detail p{margin:12px 0 0;font-size:15px;color:var(--grijs)}
+.uitleg{margin-top:16px;border:1px solid var(--lijn);border-radius:14px;padding:4px 18px}
+.uitleg summary{cursor:pointer;font-weight:700;color:var(--blauw);padding:12px 0;min-height:44px}
+.uitleg ul{margin:0 0 14px;padding-left:20px;color:var(--inkt)}
+.uitleg li{margin-bottom:6px}
+.leeg-lijst{padding:30px;text-align:center;color:var(--grijs)}
+@media (max-width:620px){
+  .lijstkop{display:none}
+  .rij{grid-template-columns:46px minmax(0,1fr) auto 18px;padding:10px 12px;gap:8px}
+  .rij .aantal{display:none}
+  .rij .naam small{display:block;font-weight:400;font-size:14px;color:var(--grijs)}
+  .detail{padding:6px 12px 16px}
+  .tabs{width:100%}
+  .tabs button{flex:1;font-size:15px;padding:10px 6px}
+  .rang small{font-size:10px}
+}
+@media (min-width:621px){ .rij .naam small{display:none} }
+</style>
+</head>
+<body>
+<header class="kop">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="assets/img/logo-160.png" alt="" width="56" height="56"><b>Bridgeclub<small>EEKLO</small></b></a>
+    <nav class="menu" aria-label="Hoofdmenu">
+      <a href="index.html#spelen">Spelen</a>
+      <a href="index.html#kalender">Kalender</a>
+      <a href="uitslagen.html" aria-current="page">Uitslagen</a>
+      <a href="club.html">Onze club</a>
+      <a href="index.html#lessen">Bridge leren</a>
+      <a href="index.html#lid">Lid worden</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <nav class="subnav" aria-label="Uitslagen">
+    <a href="uitslagen.html">Clubdrives</a>
+    <a href="ranking.html" aria-current="page">Ranking</a>
+    <a href="kroegendrive.html">Kroegendrive</a>
+    <a href="recreanten.html">Recreantentornooi</a>
+    <a href="kampioenen.html">Clubkampioenen</a>
+  </nav>
+
+  <div class="titelrij">
+    <div>
+      <p class="label" style="color:var(--blauw)">Clubcompetitie</p>
+      <h1>Ranking</h1>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Competitie">
+      <button role="tab" id="tab-di" aria-selected="true" aria-controls="lijst">Dinsdagavond</button>
+      <button role="tab" id="tab-wo" aria-selected="false" aria-controls="lijst">Woensdagnamiddag</button>
+    </div>
+  </div>
+
+  <div class="info" id="info"></div>
+  <label class="zoek"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A5563" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span class="sr">Zoek een naam</span><input id="zoek" type="search" placeholder="Zoek een naam" autocomplete="off"></label>
+
+  <div class="lijst" id="lijst" role="tabpanel">
+    <div class="lijstkop"><span>Plaats</span><span>Speler</span><span class="r">Zittingen</span><span class="r">Gem. %</span><span></span></div>
+    <div id="rijen"><p class="leeg-lijst">Ranking laden…</p></div>
+  </div>
+  <p class="muted" style="font-size:15px;margin:14px 0 0">Tik op een naam voor de scores per zitting. Een plaats tussen haakjes in de pdf (gedeelde plaats) staat hier als "gedeeld". <strong>m</strong> = minder spellen gespeeld.</p>
+  <details class="uitleg">
+    <summary>Hoe werkt de ranking?</summary>
+    <ul>
+      <li>Een competitie telt maximaal 40 zittingen. Je moet minstens 20 zittingen spelen om gerangschikt te worden; enkel je 25 beste resultaten tellen mee (artikel 14 van het clubreglement).</li>
+      <li><strong>Dinsdagavond:</strong> gespeeld in een A- en B-lijn. Om de zes weken zakken de drie laagst gerangschikten van de A-lijn en stijgen er drie uit de B-lijn. Clubkampioen is de best gerangschikte die onafgebroken in de A-lijn speelde.</li>
+      <li><strong>Woensdagnamiddag:</strong> de best gerangschikte speler aan het einde van het seizoen wordt clubkampioen.</li>
+      <li>Zolang iemand nog geen 20 zittingen speelde, kan de stand onlogisch lijken.</li>
+    </ul>
+  </details>
+</main>
+
+<footer class="voet">
+  <div class="wrap">
+    <div><img class="voet-logo" src="assets/img/logo-160.png" alt="" width="76" height="76"><b style="font-family:var(--merk);letter-spacing:.04em">Bridgeclub Eeklo</b><br>Kantine K.F.C. Eeklo · Zandvleuge 66, 9900 Eeklo</div>
+    <div>Ranking berekend met Bridge-It.<br>Fout gezien? Meld het aan de tafelleider.</div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var data = {};
+  var actief = (location.hash === '#wo') ? 'wo' : 'di';
+  var open = null;
+  var MAAND = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
+  var rijenEl = document.getElementById('rijen');
+  var infoEl = document.getElementById('info');
+  var zoekEl = document.getElementById('zoek');
+
+  window.registreerRanking = function (r) { data[r.dag] = r; toon(); };
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function nl(n) { return Number(n).toFixed(2).replace('.', ','); }
+  function datum(iso) { if (!iso) return ''; var d = new Date(iso + 'T12:00:00'); return d.getDate() + ' ' + MAAND[d.getMonth()] + ' ' + d.getFullYear(); }
+
+  function toon() {
+    ['di', 'wo'].forEach(function (k) { document.getElementById('tab-' + k).setAttribute('aria-selected', k === actief ? 'true' : 'false'); });
+    var r = data[actief];
+    if (!r) { rijenEl.innerHTML = '<p class="leeg-lijst">Nog geen ranking voor deze competitie.</p>'; infoEl.textContent = ''; return; }
+    infoEl.innerHTML = '<span><strong>' + esc(r.competitie) + '</strong></span><span>Stand na ' + r.zittingen.length + ' zittingen</span>' +
+      (r.stand_op ? '<span>Bijgewerkt ' + esc(datum(r.stand_op)) + '</span>' : '') + (r.lijn ? '<span>Lijn ' + esc(r.lijn) + '</span>' : '');
+    var q = zoekEl.value.trim().toLowerCase();
+    var lijst = r.spelers.filter(function (s) { return !q || s.naam.toLowerCase().indexOf(q) >= 0; });
+    if (!lijst.length) { rijenEl.innerHTML = '<p class="leeg-lijst">Geen speler gevonden.</p>'; return; }
+    rijenEl.innerHTML = lijst.map(function (s) {
+      var id = actief + '-' + r.spelers.indexOf(s);
+      var perZ = {}; s.scores.forEach(function (x) { perZ[x.z] = x; });
+      var tegels = r.zittingen.map(function (z) {
+        var x = perZ[z.nr];
+        if (!x) return '<div class="z leeg"><span>' + esc(z.datum || ('Zitting ' + z.nr)) + '</span>–</div>';
+        var vl = x.v ? '<abbr class="vlag" title="' + (x.v.indexOf('m') >= 0 ? 'minder spellen gespeeld' : 'opmerking') + '">' + esc(x.v) + '</abbr>' : '';
+        return '<div class="z"><span>' + esc(z.datum || ('Zitting ' + z.nr)) + '</span><b>' + nl(x.s) + '%</b>' + vl + '</div>';
+      }).join('');
+      var beste = s.scores.length ? Math.max.apply(null, s.scores.map(function (x) { return x.s; })) : 0;
+      return '<div class="item' + (open === id ? ' open' : '') + '" data-id="' + id + '">' +
+        '<button class="rij" aria-expanded="' + (open === id) + '">' +
+        '<span class="rang' + (s.rang <= 3 ? ' top' : '') + '">' + s.rang + (s.gedeeld ? '<small>gedeeld</small>' : '') + '</span>' +
+        '<span class="naam">' + esc(s.naam) + '<small>' + s.aantal + ' zitting' + (s.aantal === 1 ? '' : 'en') + '</small></span>' +
+        '<span class="r aantal">' + s.aantal + '</span>' +
+        '<span class="r gem">' + nl(s.gem) + '%</span>' +
+        '<span class="pijl" aria-hidden="true">›</span></button>' +
+        '<div class="detail"><div class="zittingen">' + tegels + '</div>' +
+        '<p>Beste zitting: <strong>' + nl(beste) + '%</strong> · gespeeld: ' + s.aantal + ' van ' + r.zittingen.length + ' zittingen</p></div></div>';
+    }).join('');
+  }
+
+  rijenEl.addEventListener('click', function (e) {
+    var b = e.target.closest('.rij'); if (!b) return;
+    var id = b.parentNode.getAttribute('data-id');
+    open = (open === id) ? null : id; toon();
+  });
+  ['di', 'wo'].forEach(function (k) {
+    document.getElementById('tab-' + k).addEventListener('click', function () {
+      actief = k; open = null; history.replaceState(null, '', '#' + k); toon();
+    });
+  });
+  zoekEl.addEventListener('input', function () { open = null; toon(); });
+  toon();
+})();
+</script>
+<script src="data/ranking-di.js"></script>
+<script src="data/ranking-wo.js"></script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kroegendrive · Bridgeclub Eeklo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Cinzel:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<link rel="icon" type="image/png" href="assets/img/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<meta name="theme-color" content="#0B2347">
+<meta property="og:title" content="Bridgeclub Eeklo">
+<meta property="og:description" content="Recreatieve bridgeclub in Eeklo: dinsdagavond en woensdagnamiddag competitie.">
+<meta property="og:image" content="assets/img/og-image.jpg">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+main{padding-top:28px;padding-bottom:20px}
+.kruim{font-size:16px;margin:0 0 14px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.kruim a{text-decoration:none;font-weight:700}
+.titelrij{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:14px;margin-bottom:22px}
+.titelrij h1{margin:0;font-size:clamp(30px,5vw,44px);font-weight:700}
+.titelrij p{margin:4px 0 0}
+select{font:inherit;font-size:16px;padding:10px 12px;border-radius:10px;border:1px solid var(--lijn);background:#fff;color:var(--inkt);min-height:44px}
+
+/* zittingkeuze: vaste plek boven de titel */
+.zittingbalk{display:flex;align-items:center;gap:8px;margin:6px 0 22px;max-width:400px}
+.zittingbalk .kiezer{flex:1;min-width:0}
+.zittingbalk select{width:100%}
+.zittingbalk .pil{min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;font-size:22px;padding:0;flex:none}
+.zittingbalk .pil.uit{opacity:.35}
+
+/* spellen bovenaan */
+.spellenblok{background:var(--blauw-licht);border-radius:18px;padding:16px 18px 18px;margin-bottom:20px}
+.spellenblok h2{margin:0 0 12px;font-size:20px}
+.spellenblok h2 .muted{font-family:var(--tekst);font-weight:400;font-size:16px}
+.spellenrij{display:flex;flex-wrap:wrap;gap:8px}
+.spellenrij .pil{background:#fff;min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0 10px;border:1px solid var(--blauw-rand)}
+.spellenrij .pil:hover{background:var(--blauw);color:#fff;border-color:var(--blauw)}
+
+/* stand */
+.stand{border:1px solid var(--lijn);border-radius:18px;overflow:hidden}
+.stand-kop,.stand-rij{display:grid;grid-template-columns:52px minmax(0,1fr) 150px 80px;gap:12px;align-items:center;padding:12px 18px}
+.stand-kop{background:#FAFBFB;font-size:14px;font-weight:700;color:var(--grijs);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--lijn)}
+.stand-rij{text-decoration:none;color:var(--inkt);border-bottom:1px solid #EEF0F1;min-height:60px}
+.stand-rij:last-child{border-bottom:0}
+.stand-rij:hover,.stand-rij:focus-visible{background:var(--blauw-licht)}
+.rang{font-family:var(--display);font-weight:700;font-size:22px;text-align:center}
+.rang.p1{color:#fff;background:var(--blauw);border-radius:10px;padding:2px 0}
+.paarnaam{font-weight:700;overflow-wrap:anywhere}
+.paarnaam small{display:block;font-weight:400;color:var(--grijs);font-size:15px}
+.r{text-align:right}
+.mp{color:var(--grijs);font-size:16px}
+.balk{display:flex;align-items:center;gap:10px}
+.balk span.b{flex:1;height:8px;border-radius:99px;background:#E4E8EF;overflow:hidden;display:block}
+.balk span.b i{display:block;height:100%;background:var(--blauw);border-radius:99px}
+.balk strong{min-width:62px;text-align:right;font-variant-numeric:tabular-nums}
+.pijl{color:var(--grijs)}
+@media (max-width:620px){
+  .stand-kop{display:none}
+  .stand-rij{grid-template-columns:44px minmax(0,1fr) 74px;padding:12px 14px}
+  .stand-rij .mp{display:none}
+  .balk span.b{display:none}
+}
+
+/* paarsamenvatting */
+.samenvatting{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px}
+.stat{background:var(--vlak);border-radius:14px;padding:14px 20px;min-width:120px}
+.stat b{display:block;font-family:var(--display);font-size:30px;font-weight:700;line-height:1.1}
+.stat span{font-size:15px;color:var(--grijs)}
+
+/* rondes */
+.ronde{border:1px solid var(--lijn);border-radius:18px;overflow:hidden;margin-bottom:16px}
+.ronde-kop{background:#F5F7FA;padding:14px 18px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;align-items:baseline;border-bottom:1px solid var(--lijn)}
+.ronde-kop h2{margin:0;font-size:20px}
+.ronde-kop .tegen{font-size:17px}
+.ronde-kop .tegen a{font-weight:700}
+.spelrij{display:grid;grid-template-columns:48px 92px 40px 64px 52px minmax(70px,1fr) 64px 20px;gap:8px;align-items:center;padding:12px 18px;text-decoration:none;color:var(--inkt);border-bottom:1px solid #EEF0F1;min-height:56px;font-variant-numeric:tabular-nums}
+.spelrij:last-child{border-bottom:0}
+.spelrij:hover,.spelrij:focus-visible{background:var(--blauw-licht)}
+.nr{font-family:var(--display);font-weight:700;font-size:20px}
+.contract{font-weight:700;background:var(--vlak);border-radius:8px;padding:3px 8px;text-align:center;white-space:nowrap}
+.leider{display:inline-flex;width:34px;height:34px;border-radius:99px;align-items:center;justify-content:center;font-weight:700}
+.leider.eigen{background:var(--blauw-licht);color:var(--blauw-donker);outline:2px solid var(--blauw-rand)}
+.pct{font-weight:700;text-align:right}
+.pct.hoog{color:var(--blauw)} .pct.laag{color:var(--rood)}
+@media (max-width:620px){
+  .spelrij{grid-template-columns:26px 62px 30px 42px 28px minmax(0,1fr) 44px;gap:5px;padding:12px 10px;font-size:15px}
+  .contract{padding:3px 4px}
+  .nr{font-size:17px}
+  .spelrij .pijl{display:none}
+  .leider{width:30px;height:30px}
+}
+
+/* spel */
+.spel-boven{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;margin-bottom:26px}
+.diagram{display:grid;grid-template-columns:repeat(3,minmax(0,auto));grid-template-rows:auto auto auto;gap:8px 18px;align-items:center;background:var(--vlak);border-radius:18px;padding:20px 22px;font-size:17px}
+.hand{line-height:1.45;white-space:nowrap}
+.hand .s{display:inline-block;width:18px}
+.kompas{width:84px;height:84px;border-radius:12px;background:var(--blauw);color:#fff;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);text-align:center;align-items:center;font-weight:700;font-size:15px}
+.kompas .g{background:#fff;color:var(--blauw);border-radius:99px;width:24px;height:24px;line-height:24px;margin:auto}
+.speldetails{display:flex;flex-direction:column;gap:10px;min-width:220px}
+.nav-spel{display:flex;gap:10px;flex-wrap:wrap}
+.nav-spel a{min-height:44px;display:inline-flex;align-items:center}
+.freq{border:1px solid var(--lijn);border-radius:18px;overflow:hidden}
+.freq-kop,.freq-rij{display:grid;grid-template-columns:92px 64px 66px minmax(0,1fr) 62px 62px minmax(0,1fr) 62px;gap:10px;align-items:center;padding:11px 18px;font-variant-numeric:tabular-nums}
+.freq-kop{background:#FAFBFB;font-size:14px;font-weight:700;color:var(--grijs);text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--lijn)}
+.freq-rij{border-bottom:1px solid #EEF0F1;font-size:17px}
+.freq-rij:last-child{border-bottom:0}
+.freq-rij.uitgelicht{background:#FFF6DB;box-shadow:inset 4px 0 0 #BD964A}
+.freq-rij .naam a{text-decoration:none;font-weight:700}
+.freq-rij .naam a:hover{text-decoration:underline}
+.lbl{display:none}
+@media (max-width:760px){
+  .freq-kop{display:none}
+  .freq-rij{grid-template-columns:auto auto auto 1fr;grid-template-areas:"c r l sc" "ns ns ns mpn" "ow ow ow mpo";row-gap:4px;padding:12px 14px}
+  .freq-rij .c{grid-area:c}.freq-rij .re{grid-area:r}.freq-rij .le{grid-area:l}.freq-rij .sc{grid-area:sc;text-align:right;font-weight:700}
+  .freq-rij .nsn{grid-area:ns}.freq-rij .owe{grid-area:ow}.freq-rij .mpn{grid-area:mpn}.freq-rij .mpo{grid-area:mpo}
+  .lbl{display:inline;color:var(--grijs);font-size:14px;margin-right:6px}
+  .freq-rij .mpn .lbl,.freq-rij .mpo .lbl{display:none}
+  .speldetails{flex-direction:row;min-width:0;width:100%}
+  .speldetails .stat{flex:1;min-width:0;padding:12px 14px}
+  .speldetails .stat b{font-size:22px}
+}
+.leeg{padding:40px;text-align:center}
+.opm{margin-top:14px;padding:14px 18px;border-radius:14px;background:var(--goud-zacht);font-size:16px;display:flex;flex-direction:column;gap:4px}
+</style>
+</head>
+<body>
+<header class="kop">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="assets/img/logo-160.png" alt="" width="56" height="56"><b>Bridgeclub<small>EEKLO</small></b></a>
+    <nav class="menu" aria-label="Hoofdmenu">
+      <a href="index.html#spelen">Spelen</a>
+      <a href="index.html#kalender">Kalender</a>
+      <a href="uitslagen.html" aria-current="page">Uitslagen</a>
+      <a href="club.html">Onze club</a>
+      <a href="index.html#lessen">Bridge leren</a>
+      <a href="index.html#lid">Lid worden</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap" style="padding-top:22px">
+  <nav class="subnav" aria-label="Uitslagen" style="margin-bottom:0">
+    <a href="uitslagen.html">Clubdrives</a>
+    <a href="ranking.html">Ranking</a>
+    <a href="kroegendrive.html" aria-current="page">Kroegendrive</a>
+    <a href="recreanten.html">Recreantentornooi</a>
+    <a href="kampioenen.html">Clubkampioenen</a>
+  </nav>
+</div>
+<main class="wrap" id="app" aria-live="polite">
+  <p class="leeg muted">Uitslagen laden…</p>
+</main>
+
+<footer class="voet">
+  <div class="wrap">
+    <div><img class="voet-logo" src="assets/img/logo-160.png" alt="" width="76" height="76"><b style="font-family:var(--merk);letter-spacing:.04em">Bridgeclub Eeklo</b><br>Kantine K.F.C. Eeklo · Zandvleuge 66, 9900 Eeklo</div>
+    <div>Uitslagen berekend met Bridge-It.<br>Fout gezien? Meld het aan de tafelleider.</div>
+  </div>
+</footer>
+
+<script>window.UITSLAG_MAP = "data/kroegendrive/"; window.UITSLAG_LEEG = "Nog geen uitslagen van de Kroegendrive op de site.<br>11de Kroegendrive (13 dec 2025): <a href=\"https://drive.google.com/file/d/1rNS4MM3WjHsmS-cwpx5Vu-0LNXFF_1is/view\">uitslag</a> · <a href=\"https://drive.google.com/file/d/1dxjNSrhZ6w981m8NorN3WUjrLvB1bEUI/view\">frequentiestaat</a> · <a href=\"https://drive.google.com/file/d/1Pm3NACy3qhXjsdDQKDigmS_vOtZOSBcr/view\">historiek sinds 2015</a>"; window.ZITTINGEN = [];</script>
+<script src="data/kroegendrive/lijst.js"></script>
+<script src="assets/uitslagen.js"></script>
+</body>
+</html>

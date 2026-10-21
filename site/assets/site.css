@@ -1,0 +1,58 @@
+:root{
+  --blauw:#0B2347; --blauw-donker:#061631; --blauw-licht:#EDF1F7; --blauw-rand:#C9D3E3;
+  --inkt:#1B2430; --grijs:#4A5563; --lijn:#E3E6E8; --vlak:#F3F5F6;
+  --rood:#A41C1F; --amber:#8A6A2A; --wit:#FFFFFF; --bg:#FFFFFF;
+  --goud:#BD964A; --goud-licht:#E5C987; --goud-zacht:#F7F1E3;
+  --display:'Source Serif 4',Georgia,serif;
+  --merk:'Cinzel',Georgia,serif;
+  --tekst:'Atkinson Hyperlegible',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--inkt);font-family:var(--tekst);font-size:18px;line-height:1.55}
+a{color:var(--blauw)} a:hover{color:var(--blauw-donker)}
+h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:-.005em;line-height:1.12}
+.wrap{max-width:1160px;margin:0 auto;padding:0 20px}
+.muted{color:var(--grijs)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* header */
+.kop{border-bottom:3px solid var(--goud);background:var(--wit);position:sticky;top:0;z-index:10}
+.kop .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding-top:10px;padding-bottom:10px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--blauw)}
+.logo img{width:56px;height:56px;display:block}
+.logo b{font-family:var(--merk);font-weight:700;font-size:21px;letter-spacing:.04em;line-height:1.05}
+.logo b small{display:block;font-size:13px;letter-spacing:.32em;color:var(--goud);font-weight:600}
+.menu{display:flex;flex-wrap:wrap;gap:4px 20px;font-size:17px}
+.menu a{text-decoration:none;color:var(--inkt);padding:6px 0}
+.menu a[aria-current]{color:var(--blauw);font-weight:700;box-shadow:inset 0 -2px 0 var(--blauw)}
+
+/* knoppen */
+.knop{display:inline-block;text-decoration:none;font-weight:700;padding:13px 24px;border-radius:999px;background:var(--blauw);color:#fff}
+.knop:hover{background:var(--blauw-donker);color:#fff}
+.knop.licht{background:#fff;color:var(--blauw-donker)}
+.knop.rand{background:transparent;border:2px solid #E5C987;color:#fff}
+.pil{display:inline-block;text-decoration:none;font-weight:700;padding:9px 14px;border-radius:10px;background:var(--blauw-licht);color:var(--blauw-donker)}
+
+/* subnavigatie uitslagen / ranking */
+.subnav{display:flex;gap:2px;border-bottom:1px solid var(--lijn);margin:0 0 20px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.subnav::-webkit-scrollbar{display:none}
+.subnav a{text-decoration:none;color:var(--grijs);font-weight:700;padding:10px 14px;min-height:44px;display:inline-flex;align-items:center;border-bottom:3px solid transparent;margin-bottom:-1px}
+.subnav a:hover{color:var(--blauw)}
+.subnav a[aria-current]{color:var(--blauw);border-bottom-color:var(--goud)}
+
+/* kaarten */
+.kaart{border:1px solid var(--lijn);border-radius:18px;padding:24px}
+.raster{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.label{margin:0;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+
+/* voet */
+.voet{background:#061631;color:#D4DDEB;margin-top:64px;border-top:3px solid var(--goud)}
+.voet-logo{width:76px;height:76px;display:block;margin-bottom:10px}
+.voet .wrap{display:flex;flex-wrap:wrap;gap:28px 64px;padding-top:44px;padding-bottom:44px;font-size:16px}
+.voet a{color:#D4DDEB}
+.voet b{color:#fff}
+
+/* kaartkleuren */
+.s{font-style:normal;font-variant-emoji:text;font-family:'Segoe UI Symbol','DejaVu Sans','Noto Sans Symbols 2',var(--tekst)}
+.s.h,.s.d{color:var(--rood)}

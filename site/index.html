@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bridgeclub Eeklo</title>
+<meta name="description" content="Recreatieve bridgeclub in Eeklo. Dinsdagavond en woensdagnamiddag competitie in de kantine van K.F.C. Eeklo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Cinzel:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<link rel="icon" type="image/png" href="assets/img/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<meta name="theme-color" content="#0B2347">
+<meta property="og:title" content="Bridgeclub Eeklo">
+<meta property="og:description" content="Recreatieve bridgeclub in Eeklo: dinsdagavond en woensdagnamiddag competitie.">
+<meta property="og:image" content="assets/img/og-image.jpg">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.held{background:var(--blauw);color:#fff}
+.held .wrap{display:flex;flex-wrap:wrap;gap:44px;align-items:center;padding-top:64px;padding-bottom:72px}
+.held-tekst{flex:999 1 500px;min-width:0;display:flex;flex-direction:column;gap:20px}
+.held h1{margin:0;font-weight:700;font-size:clamp(38px,6vw,66px);line-height:1.02}
+.held p{margin:0}
+.held-logo{width:132px;height:132px;display:block;border-radius:50%;box-shadow:0 0 0 4px rgba(189,150,74,.35),0 14px 30px rgba(0,0,0,.25)}
+.held .label{color:var(--goud-licht)}
+.held .intro{font-size:21px;max-width:34em;color:#E3E9F2}
+.held .label{color:#E5C987}
+.knoppen{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+.volgende{flex:1 1 320px;min-width:0;background:#fff;color:var(--inkt);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:14px;box-shadow:0 20px 40px rgba(0,0,0,.18)}
+.volgende .label{color:var(--grijs)}
+.dag{display:flex;gap:16px;align-items:center}
+.dag .d{width:62px;flex:none;text-align:center;border-radius:12px;background:var(--blauw-licht);padding:8px 0;line-height:1.15}
+.dag .d small{display:block;font-size:13px;font-weight:700;color:var(--blauw)}
+.dag .d b{font-family:var(--display);font-size:27px;font-weight:700}
+.dag .d span{display:block;font-size:13px;color:var(--grijs)}
+.dag.ev .d{background:#FBEDEB}.dag.ev .d small{color:var(--rood)}
+section.blok{padding-top:72px}
+section.blok h2{margin:0 0 8px;font-size:clamp(30px,4vw,40px);font-weight:700}
+.intro2{margin:0 0 28px;color:var(--grijs);max-width:42em}
+.groot{margin:0;font-family:var(--display);font-size:32px;font-weight:700;color:var(--blauw)}
+.agenda{border:1px solid var(--lijn);border-radius:18px;overflow:hidden}
+.agenda-rij{display:flex;flex-wrap:wrap;gap:4px 22px;align-items:center;padding:14px 22px;border-bottom:1px solid #EEF0F1}
+.agenda-rij:last-child{border-bottom:0}
+.agenda-rij .wanneer{display:flex;align-items:center;gap:12px;width:180px;font-weight:700}
+.stip{width:12px;height:12px;border-radius:99px;display:inline-block;flex:none}
+.agenda-rij .wat{flex:1 1 240px}
+.uitslag-laatst{display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;background:var(--blauw-licht);border-radius:20px;padding:28px}
+.lessen{border-radius:24px;background:var(--inkt);color:#fff;padding:44px 36px;display:flex;flex-wrap:wrap;gap:28px;align-items:center}
+.lessen h2{color:#fff}
+.formules{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.formule{border:1px solid var(--lijn);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:6px}
+.formule .code{width:38px;height:38px;border-radius:99px;background:var(--inkt);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+.formule b{font-family:var(--display);font-size:36px;font-weight:700}
+.betalen{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px 32px;padding:18px 22px;border-radius:14px;background:var(--vlak);font-size:16px}
+.kaartvak{flex:1.4 1 420px;min-width:0;min-height:340px;border-radius:20px;overflow:hidden;border:1px solid var(--lijn);position:relative;background:var(--blauw-licht)}
+.kaartvak iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.kaartlink{position:absolute;right:12px;bottom:12px;background:#fff;color:var(--blauw);font-weight:700;text-decoration:none;padding:10px 14px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.18);font-size:15px}
+</style>
+</head>
+<body>
+<header class="kop">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="assets/img/logo-160.png" alt="" width="56" height="56"><b>Bridgeclub<small>EEKLO</small></b></a>
+    <nav class="menu" aria-label="Hoofdmenu">
+      <a href="#spelen">Spelen</a>
+      <a href="#kalender">Kalender</a>
+      <a href="uitslagen.html">Uitslagen</a>
+      <a href="club.html">Onze club</a>
+      <a href="#lessen">Bridge leren</a>
+      <a href="#lid">Lid worden</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="held">
+  <div class="wrap">
+    <div class="held-tekst">
+      <img class="held-logo" src="assets/img/logo.webp" alt="Logo Bridgeclub Eeklo" width="132" height="132">
+      <p class="label">Recreatieve bridgeclub · Eeklo</p>
+      <h1>Elke week bridge, in een warme club.</h1>
+      <p class="intro">Dinsdagavond en woensdagnamiddag spelen we competitie in de kantine van K.F.C. Eeklo. Nieuwe spelers en beginners zijn altijd welkom om vrijblijvend te komen kijken.</p>
+      <div class="knoppen"><a class="knop licht" href="#lid">Kom eens proeven</a><a class="knop rand" href="#kalender">Bekijk de kalender</a></div>
+    </div>
+    <div class="volgende">
+      <p class="label muted">Volgende speelmomenten</p>
+      <div class="dag"><div class="d"><small>DI</small><b>20</b><span>okt</span></div><div><b>Avondcompetitie · zitting 08</b><div class="muted" style="font-size:16px">Start 19.30 u · aanwezig 19.20 u</div></div></div>
+      <div class="dag"><div class="d"><small>WO</small><b>21</b><span>okt</span></div><div><b>Namiddagcompetitie · zitting 07</b><div class="muted" style="font-size:16px">Start 14.00 u · aanwezig 13.50 u</div></div></div>
+      <div class="dag ev" style="border-top:1px solid var(--lijn);padding-top:14px"><div class="d"><small>ZA</small><b>19</b><span>dec</span></div><div><b>12de Kroegendrive</b><div class="muted" style="font-size:16px">Inschrijven via de club</div></div></div>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+<section class="blok" id="spelen">
+  <h2>Wanneer spelen we?</h2>
+  <p class="intro2">Meld je ten laatste 10 minuten voor de start aan. Geen partner? Laat het ons weten, we zoeken er samen één.</p>
+  <div class="raster">
+    <div class="kaart"><h3 style="margin:0 0 6px;font-size:23px">♠ Avondbridge</h3><p class="groot">Dinsdag 19.30 u</p><p class="muted" style="margin:6px 0 0">Avondcompetitie in zittingen, aanwezig om 19.20 u.</p></div>
+    <div class="kaart"><h3 style="margin:0 0 6px;font-size:23px"><span class="s h">♥</span> Namiddagbridge</h3><p class="groot">Woensdag 14.00 u</p><p class="muted" style="margin:6px 0 0">Namiddagcompetitie in zittingen, aanwezig om 13.50 u.</p></div>
+    <div class="kaart" style="background:var(--vlak);border-color:var(--vlak)"><h3 style="margin:0 0 6px;font-size:23px">♣ Partner gezocht</h3><p class="muted" style="margin:0 0 10px">Zoek je een vaste of eenmalige partner? Laat het ons weten.</p><a href="club.html#partner" style="font-weight:700">Partner zoeken →</a></div>
+  </div>
+</section>
+
+<section class="blok" id="kalender">
+  <h2>Kalender</h2>
+  <p class="intro2">De eerstvolgende zittingen en activiteiten.</p>
+  <div class="agenda">
+    <div class="agenda-rij"><span class="wanneer"><span class="stip" style="background:var(--blauw)"></span>di 20 okt</span><span class="wat">Avondcompetitie · zitting 08</span><span class="muted">19.30 u</span></div>
+    <div class="agenda-rij"><span class="wanneer"><span class="stip" style="background:#BD964A"></span>wo 21 okt</span><span class="wat">Namiddagcompetitie · zitting 07</span><span class="muted">14.00 u</span></div>
+    <div class="agenda-rij"><span class="wanneer"><span class="stip" style="background:var(--blauw)"></span>di 27 okt</span><span class="wat">Avondcompetitie · zitting 09</span><span class="muted">19.30 u</span></div>
+    <div class="agenda-rij"><span class="wanneer"><span class="stip" style="background:#BD964A"></span>wo 28 okt</span><span class="wat">Namiddagcompetitie · zitting 08</span><span class="muted">14.00 u</span></div>
+    <div class="agenda-rij"><span class="wanneer"><span class="stip" style="background:var(--blauw)"></span>di 3 nov</span><span class="wat">Avondcompetitie · zitting 10</span><span class="muted">19.30 u</span></div>
+    <div class="agenda-rij"><span class="wanneer"><span class="stip" style="background:#BD964A"></span>wo 4 nov</span><span class="wat">Namiddagcompetitie · zitting 09</span><span class="muted">14.00 u</span></div>
+    <div class="agenda-rij"><span class="wanneer"><span class="stip" style="background:var(--rood)"></span>za 19 dec</span><span class="wat">12de Kroegendrive BC Eeklo</span><span class="muted">info volgt</span></div>
+    <div class="agenda-rij"><span class="wanneer"><span class="stip" style="background:var(--rood)"></span>29–30 dec</span><span class="wat">1ste Internationaal Bridgefestival Knokke-Heist</span><span class="muted">Knokke-Heist</span></div>
+  </div>
+</section>
+
+<section class="blok" id="uitslagen">
+  <h2>Uitslagen</h2>
+  <p class="intro2">Volledige stand, persoonlijke uitslag per paar en alle resultaten per spel.</p>
+  <div class="uitslag-laatst" id="laatste">
+    <div><p class="label" style="color:var(--blauw)">Laatste zitting</p><p style="margin:4px 0 0;font-size:22px;font-weight:700">Bekijk de uitslagen</p></div>
+    <a class="knop" href="uitslagen.html">Naar de uitslagen</a>
+  </div>
+</section>
+
+<section class="blok" id="lessen">
+  <div class="lessen">
+    <div style="flex:999 1 440px;min-width:0;display:flex;flex-direction:column;gap:12px">
+      <p class="label" style="color:#E5C987">Bridge leren</p>
+      <h2 style="margin:0">Nog nooit gebridged? Wij leren het je.</h2>
+      <p style="margin:0;color:#D5DAE0;max-width:36em">Bij voldoende belangstelling start een beginnerscursus, gegeven door de eigen clublesgevers. Cursisten van het tweede jaar volgen herhalingslessen en spelen mee in de club.</p>
+    </div>
+    <div style="flex:1 1 240px;display:flex;flex-direction:column;gap:12px">
+      <a class="knop licht" href="mailto:nicolevandaele@hotmail.com?subject=Interesse%20bridgecursus" style="text-align:center">Ik heb interesse</a>
+      <a class="knop rand" href="https://lessen.bceeklo.be/" style="text-align:center">Cursist? Naar de lessen</a>
+    </div>
+  </div>
+</section>
+
+<section class="blok" id="lid">
+  <h2>Lid worden · seizoen 2026–2027</h2>
+  <p class="intro2">Je kunt op elk moment lid worden. Het clublidgeld is € 20. Aansluiting bij de Vlaamse Bridge Liga (VBL) en het magazine Bridge Beter (BBM) zijn optioneel.</p>
+  <div class="formules">
+    <div class="formule"><span class="code">A</span><b>€ 20</b><span class="muted">Clublidgeld, zonder VBL</span></div>
+    <div class="formule"><span class="code">B</span><b>€ 65</b><span class="muted">Clublidgeld + VBL, zonder magazine</span></div>
+    <div class="formule" style="background:var(--blauw-licht)"><span class="code">C</span><b>€ 75</b><span class="muted">Clublidgeld + VBL, BBM digitaal</span></div>
+    <div class="formule"><span class="code">D</span><b>€ 95</b><span class="muted">Clublidgeld + VBL, BBM op papier</span></div>
+  </div>
+  <div class="betalen">
+    <span><strong>Cursisten:</strong> € 20 (incl. VBL 2 jaar, BBM digitaal) · € 50 met BBM op papier</span>
+    <span><strong>Betalen:</strong> BE37 3900 5697 5128 · vermelding "lidgeld 2026-2027 + formule"</span>
+  </div>
+</section>
+
+<section class="blok" id="contact">
+  <div style="display:flex;flex-wrap:wrap;gap:24px">
+    <div style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:14px">
+      <h2>Kom gerust langs</h2>
+      <p style="margin:0;font-size:20px"><strong>Clublokaal</strong><br>Kantine K.F.C. Eeklo<br>Zandvleuge 66, 9900 Eeklo</p>
+      <div style="border-top:1px solid var(--lijn);padding-top:14px">
+        <p style="margin:0;font-weight:700">Secretariaat &amp; lidmaatschap</p>
+        <p style="margin:0">Nicole Van Daele · 0486 16 78 49</p>
+        <a href="mailto:nicolevandaele@hotmail.com">nicolevandaele@hotmail.com</a>
+      </div>
+      <a class="pil" style="align-self:flex-start" href="https://www.google.com/maps/dir/?api=1&destination=Zandvleuge+66,+9900+Eeklo">Route plannen</a>
+    </div>
+    <div class="kaartvak">
+      <iframe title="Kaart: clublokaal, Zandvleuge 66, Eeklo" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Zandvleuge%2066%2C%209900%20Eeklo&z=15&output=embed"></iframe>
+      <a class="kaartlink" href="https://www.google.com/maps/search/?api=1&query=Zandvleuge+66,+9900+Eeklo">Open in Google Maps</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="voet">
+  <div class="wrap">
+    <div style="flex:2 1 260px"><img class="voet-logo" src="assets/img/logo-160.png" alt="" width="76" height="76"><b style="font-family:var(--merk);font-size:20px;letter-spacing:.04em">Bridgeclub Eeklo</b><br>Recreatieve bridgeclub, aangesloten bij de Vlaamse Bridge Liga.</div>
+    <div style="flex:1 1 160px"><b>Competitie</b><br><a href="uitslagen.html">Uitslagen</a><br><a href="ranking.html">Ranking</a><br><a href="kampioenen.html">Clubkampioenen</a><br><a href="kroegendrive.html">Kroegendrive</a></div>
+    <div style="flex:1 1 160px"><b>Club</b><br><a href="club.html#geschiedenis">Geschiedenis</a><br><a href="club.html#bestuur">Bestuur</a><br><a href="club.html#reglement">Clubreglement</a><br><a href="club.html#leden">Ledenzone</a></div>
+    <div style="flex:1 1 160px"><b>Handig</b><br><a href="https://lessen.bceeklo.be/">Lessen (cursisten)</a><br><a href="https://www.vbl.be">Vlaamse Bridge Liga</a><br><a href="club.html#links">Links</a><br><a href="#contact">Contact</a></div>
+  </div>
+</footer>
+
+<script src="data/zittingen.js"></script>
+<script>
+(function () {
+  var z = (window.ZITTINGEN || [])[0];
+  if (!z) return;
+  var M = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
+  var d = new Date(z.datum + 'T12:00:00');
+  var dag = z.zitting.toLowerCase().indexOf('di') === 0 ? 'Dinsdagavond' : 'Woensdagnamiddag';
+  var el = document.getElementById('laatste');
+  el.querySelector('p+p').textContent = dag + ' ' + d.getDate() + ' ' + M[d.getMonth()] + ' · winnaars: ' + z.winnaar;
+  el.querySelector('a').href = 'uitslagen.html#/' + z.id;
+})();
+</script>
+</body>
+</html>
