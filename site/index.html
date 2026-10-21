@@ -33,6 +33,8 @@
 .dag .d b{font-family:var(--display);font-size:27px;font-weight:700}
 .dag .d span{display:block;font-size:13px;color:var(--grijs)}
 .dag.ev .d{background:#FBEDEB}.dag.ev .d small{color:var(--rood)}
+.dag.geen .d{background:#F1F2F3}.dag.geen .d small{color:var(--grijs)}.dag.geen b{color:var(--grijs)}
+.agenda-rij.geen .wat{color:var(--grijs);font-weight:700}
 section.blok{padding-top:72px}
 section.blok h2{margin:0 0 8px;font-size:clamp(30px,4vw,40px);font-weight:700}
 .intro2{margin:0 0 28px;color:var(--grijs);max-width:42em}
@@ -81,7 +83,7 @@ section.blok h2{margin:0 0 8px;font-size:clamp(30px,4vw,40px);font-weight:700}
       <p class="intro">Dinsdagavond en woensdagnamiddag spelen we competitie in de kantine van K.F.C. Eeklo. Nieuwe spelers en beginners zijn altijd welkom om vrijblijvend te komen kijken.</p>
       <div class="knoppen"><a class="knop licht" href="#lid">Kom eens proeven</a><a class="knop rand" href="#kalender">Bekijk de kalender</a></div>
     </div>
-    <div class="volgende">
+    <div class="volgende" id="volgende">
       <p class="label muted">Volgende speelmomenten</p>
       <div class="dag"><div class="d"><small>DI</small><b>20</b><span>okt</span></div><div><b>Avondcompetitie · zitting 08</b><div class="muted" style="font-size:16px">Start 19.30 u · aanwezig 19.20 u</div></div></div>
       <div class="dag"><div class="d"><small>WO</small><b>21</b><span>okt</span></div><div><b>Namiddagcompetitie · zitting 07</b><div class="muted" style="font-size:16px">Start 14.00 u · aanwezig 13.50 u</div></div></div>
@@ -104,7 +106,7 @@ section.blok h2{margin:0 0 8px;font-size:clamp(30px,4vw,40px);font-weight:700}
 <section class="blok" id="kalender">
   <h2>Kalender</h2>
   <p class="intro2">De eerstvolgende zittingen en activiteiten.</p>
-  <div class="agenda">
+  <div class="agenda" id="agenda">
     <div class="agenda-rij"><span class="wanneer"><span class="stip" style="background:var(--blauw)"></span>di 20 okt</span><span class="wat">Avondcompetitie · zitting 08</span><span class="muted">19.30 u</span></div>
     <div class="agenda-rij"><span class="wanneer"><span class="stip" style="background:#BD964A"></span>wo 21 okt</span><span class="wat">Namiddagcompetitie · zitting 07</span><span class="muted">14.00 u</span></div>
     <div class="agenda-rij"><span class="wanneer"><span class="stip" style="background:var(--blauw)"></span>di 27 okt</span><span class="wat">Avondcompetitie · zitting 09</span><span class="muted">19.30 u</span></div>
@@ -184,6 +186,60 @@ section.blok h2{margin:0 0 8px;font-size:clamp(30px,4vw,40px);font-weight:700}
 </footer>
 
 <script src="data/zittingen.js"></script>
+<script src="data/kalender.js"></script>
+<script>
+/* Kalender: komt uit data/kalender.js (door de robot gemaakt uit de Google Agenda van de club).
+   Voorbije activiteiten verdwijnen vanzelf. Zonder JavaScript blijft de vaste tekst staan. */
+(function () {
+  var K = window.KALENDER; if (!K || !K.length) return;
+  var M = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
+  var D = ['zo','ma','di','wo','do','vr','za'];
+  var KLEUR = { di: 'var(--blauw)', wo: '#BD964A', event: 'var(--rood)', geen: '#9AA3AD' };
+  function esc(t) { return String(t).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function iso(d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function dag(s) { return new Date(s + 'T12:00:00'); }
+  function titel(e) { return e.titel.replace(/\s*[-–·:]?\s+(zitting)/i, ' · $1'); }
+  function wanneer(e) {
+    var a = dag(e.datum), t = e.tot ? dag(e.tot) : null;
+    if (t && t.getMonth() === a.getMonth()) return a.getDate() + '–' + t.getDate() + ' ' + M[a.getMonth()];
+    if (t) return a.getDate() + ' ' + M[a.getMonth()] + ' – ' + t.getDate() + ' ' + M[t.getMonth()];
+    return D[a.getDay()] + ' ' + a.getDate() + ' ' + M[a.getMonth()];
+  }
+  function min10(t) { var p = t.split('.'), m = +p[0] * 60 + +p[1] - 10; return Math.floor(m / 60) + '.' + ('0' + m % 60).slice(-2); }
+  var nu = new Date(), vandaag = iso(nu), uur = nu.getHours() + nu.getMinutes() / 60;
+  /* vandaag: tonen tot ± 3 uur na de start (een lopende zitting blijft dus nog even staan) */
+  var komend = K.filter(function (e) {
+    var laatste = e.tot || e.datum;
+    if (laatste > vandaag) return true;
+    if (laatste < vandaag) return false;
+    if (e.tot || !e.tijd) return true;
+    var p = e.tijd.split('.'); return uur < +p[0] + +p[1] / 60 + 3;
+  });
+  if (!komend.length) return;
+
+  var spel = komend.filter(function (e) { return e.soort !== 'event'; }).slice(0, 2);
+  var ev = komend.filter(function (e) { return e.soort === 'event'; })[0];
+  function blok(e, extra) {
+    var a = dag(e.datum), sub;
+    if (e.soort === 'geen') sub = 'Geen bridge deze ' + (a.getDay() === 2 ? 'dinsdagavond' : a.getDay() === 3 ? 'woensdagnamiddag' : 'dag');
+    else if (e.soort !== 'event' && e.tijd) sub = 'Start ' + e.tijd + ' u · aanwezig ' + min10(e.tijd) + ' u';
+    else sub = [e.tijd ? e.tijd + ' u' : '', e.plaats || ''].filter(Boolean).join(' · ') || 'Meer info volgt';
+    return '<div class="dag' + (e.soort === 'event' ? ' ev' : e.soort === 'geen' ? ' geen' : '') + '"' + (extra || '') + '><div class="d"><small>' +
+      D[a.getDay()].toUpperCase() + '</small><b>' + a.getDate() + '</b><span>' + M[a.getMonth()] + '</span></div><div><b>' +
+      esc(titel(e)) + '</b><div class="muted" style="font-size:16px">' + esc(sub) + '</div></div></div>';
+  }
+  var v = document.getElementById('volgende');
+  if (v) v.innerHTML = '<p class="label muted">Volgende speelmomenten</p>' + spel.map(function (e) { return blok(e); }).join('') +
+    (ev ? blok(ev, ' style="border-top:1px solid var(--lijn);padding-top:14px"') : '');
+
+  var ag = document.getElementById('agenda');
+  if (ag) ag.innerHTML = komend.slice(0, 8).concat(komend.slice(8).filter(function (e) { return e.soort === 'event'; }).slice(0, 2)).map(function (e) {
+    var rechts = e.soort === 'geen' ? '' : (e.tijd ? e.tijd + ' u' : (e.plaats || 'info volgt'));
+    return '<div class="agenda-rij' + (e.soort === 'geen' ? ' geen' : '') + '"><span class="wanneer"><span class="stip" style="background:' + (KLEUR[e.soort] || KLEUR.event) + '"></span>' +
+      esc(wanneer(e)) + '</span><span class="wat">' + esc(titel(e)) + '</span><span class="muted">' + esc(rechts) + '</span></div>';
+  }).join('');
+})();
+</script>
 <script>
 (function () {
   var z = (window.ZITTINGEN || [])[0];

@@ -37,12 +37,17 @@ jobs:
           DRIVE_MAP_ID: ${{ vars.DRIVE_MAP_ID }}
         run: python tools/verwerk_drive.py
 
+      - name: Kalender uit de Google Agenda van de club
+        id: kalender
+        continue-on-error: true
+        run: python tools/kalender_naar_data.py
+
       - name: Website bijwerken
-        if: steps.verwerk.outputs.gewijzigd == 'ja'
+        if: steps.verwerk.outputs.gewijzigd == 'ja' || steps.kalender.outputs.gewijzigd == 'ja'
         run: |
           git config user.name "Uitslagen-robot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add site/data
-          git commit -m "Nieuwe uitslagen $(date +'%Y-%m-%d %H:%M')"
+          git commit -m "Website bijgewerkt (uitslagen/kalender) $(date +'%Y-%m-%d %H:%M')"
           git pull --rebase
           git push
