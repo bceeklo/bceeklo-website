@@ -54,5 +54,13 @@ window.ZITTINGEN = [
   "paren": 16,
   "spellen": 28,
   "winnaar": "Formesyn & Seghers"
+ },
+ {
+  "id": "2026-09-01-di",
+  "datum": "2026-09-01",
+  "zitting": "Di Z 1",
+  "paren": 26,
+  "spellen": 28,
+  "winnaar": "Arnou & Laureyns"
  }
 ];
