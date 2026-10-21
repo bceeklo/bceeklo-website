@@ -6,6 +6,11 @@ const REPO = 'bceeklo/bceeklo-website';
 const WORKFLOW = 'uitslagen.yml';
 const API = 'https://api.github.com/repos/' + REPO;
 
+function env(naam) {
+  try { if (globalThis.Netlify && Netlify.env && Netlify.env.get(naam)) return Netlify.env.get(naam); } catch { /* */ }
+  return process.env[naam] || '';
+}
+
 function antwoord(status, body) {
   return new Response(JSON.stringify(body), {
     status, headers: { 'content-type': 'application/json', 'cache-control': 'no-store' },
@@ -16,7 +21,7 @@ async function gh(pad, opties = {}) {
   return fetch(API + pad, {
     ...opties,
     headers: {
-      authorization: 'Bearer ' + process.env.GH_ROBOT_TOKEN,
+      authorization: 'Bearer ' + env('GH_ROBOT_TOKEN'),
       accept: 'application/vnd.github+json',
       'x-github-api-version': '2022-11-28',
       'user-agent': 'bceeklo-verwerk-knop',
@@ -26,12 +31,13 @@ async function gh(pad, opties = {}) {
 }
 
 export default async (req) => {
-  if (!process.env.GH_ROBOT_TOKEN || !process.env.VERWERK_CODE) {
-    return antwoord(500, { fout: 'De knop is nog niet ingesteld (token of code ontbreekt in Netlify).' });
+  const ontbreekt = ['GH_ROBOT_TOKEN', 'VERWERK_CODE'].filter((n) => !env(n));
+  if (ontbreekt.length) {
+    return antwoord(500, { fout: 'De knop is nog niet ingesteld: ' + ontbreekt.join(' en ') + ' ontbreekt in Netlify (Production).' });
   }
   let data = {};
   try { data = await req.json(); } catch { /* leeg */ }
-  if (String(data.code || '').trim() !== String(process.env.VERWERK_CODE).trim()) {
+  if (String(data.code || '').trim() !== String(env('VERWERK_CODE')).trim()) {
     await new Promise((r) => setTimeout(r, 800)); // raden traag maken
     return antwoord(403, { fout: 'Verkeerde code.' });
   }
