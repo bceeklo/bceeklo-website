@@ -4,7 +4,7 @@ name: Uitslagen verwerken
 # Meteen laten lopen: tabblad Actions > "Uitslagen verwerken" > Run workflow.
 on:
   schedule:
-    - cron: "*/30 5-21 * * *"   # UTC
+    - cron: "7,37 5-21 * * *"   # UTC; niet op :00/:30, dan is GitHub minder druk
   workflow_dispatch:
 
 permissions:
