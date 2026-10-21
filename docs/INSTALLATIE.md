@@ -40,6 +40,11 @@ tweestapsverificatie. Zonder die codes raakt een opvolger er niet meer in.
 3. Branch: `main`. De rest vult Netlify zelf in uit `netlify.toml` (publiceren: map `site`,
    geen build-commando) › **Deploy**.
 4. Controleer na een minuut bceeklo.be. Je domein en https blijven gewoon werken.
+5. Netlify › team › **Members › Git contributors › Edit settings** › GitHub **Connect** › aanmelden
+   als `bceeklo`. Anders weigert het gratis plan wijzigingen van bceeklo in een privé-repository
+   ("Unrecognized Git contributor"). Wijzigingen van de robot worden altijd doorgelaten.
+6. **Project configuration › Build & deploy › Branches and deploy contexts** › Deploy Previews: **None**
+   (niet nodig, kost enkel credits).
 
 Vanaf nu publiceert Netlify **elke wijziging op GitHub automatisch**. Slepen naar Netlify is voorbij.
 
@@ -115,4 +120,5 @@ Netlify (gratis plan), Google Cloud (Drive API binnen de gratis limieten).
 | "De submap 'Nieuw' ontbreekt" | Stap 4.2: mappen Nieuw, Verwerkt, Fout aanmaken. |
 | "403" / "insufficient permissions" | Het service-account is geen Bewerker van de map (stap 4.3). |
 | Pdf staat in **Fout** | Naam begint met "FOUT – ". Rechtsklik › *Bestandsinformatie* › *Details*: daar staat de reden. |
+| Netlify: "Build blocked: Unrecognized Git contributor" | Stap 2.5: GitHub-account bceeklo koppelen bij Git contributors, daarna *Retry*. |
 | Bestand blijft in **Nieuw** staan | Het tweede bestand van die zitting ontbreekt nog; na 12 uur gaat het naar Fout. |
