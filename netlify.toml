@@ -8,3 +8,12 @@
   from = "/uitslagen"
   to = "/uitslagen.html"
   status = 200
+
+# Kleine functie achter de knop op bceeklo.be/verwerk (start de uitslagen-robot op GitHub)
+[functions]
+  directory = "netlify/functions"
+
+[[redirects]]
+  from = "/verwerk"
+  to = "/verwerk.html"
+  status = 200

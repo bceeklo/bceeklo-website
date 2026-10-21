@@ -14,6 +14,7 @@ opgehaald uit Google Drive en omgezet.
 | `tools/verwerk_drive.py` | Haalt nieuwe pdf's uit Google Drive en verwerkt ze automatisch |
 | `tools/kalender_naar_data.py` | Leest de openbare Google Agenda van de club → `site/data/kalender.js` (homepage) |
 | `.github/workflows/uitslagen.yml` | Laat `verwerk_drive.py` elk halfuur lopen (07–23 u) |
+| `netlify/functions/verwerk.mjs` | Knop op bceeklo.be/verwerk: start de robot meteen (Netlify-variabelen `GH_ROBOT_TOKEN`, `VERWERK_CODE`) |
 | `netlify.toml` | Netlify publiceert de map `site` |
 | `docs/INSTALLATIE.md` | Eenmalige installatie (GitHub, Netlify, Google Drive) |
 | `docs/OPLADEN.md` | Handleiding voor de tafelleiders |

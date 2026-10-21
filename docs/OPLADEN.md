@@ -5,7 +5,8 @@
 1. Sla in Bridge-It de **verzamelstaat** en de **frequentiestaat** op als pdf, zoals je altijd doet.
 2. Open Google Drive › map **Uitslagen website** › **Nieuw**.
 3. Sleep de twee pdf's in de map **Nieuw**.
-4. Klaar. Binnen het halfuur staat de uitslag op **bceeklo.be**.
+4. Klaar. Binnen het uur staat de uitslag op **bceeklo.be**.
+   Sneller? Ga naar **bceeklo.be/verwerk**, tik de code in en druk op **Uitslagen nu verwerken**.
 
 **De ranking**: sla de *Individuele competitiestand* op als pdf en sleep ook die in **Nieuw**.
 
