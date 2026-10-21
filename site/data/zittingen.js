@@ -1,5 +1,13 @@
 window.ZITTINGEN = [
  {
+  "id": "2026-10-20-di",
+  "datum": "2026-10-20",
+  "zitting": "Din Z 8",
+  "paren": 28,
+  "spellen": 28,
+  "winnaar": "Laureyns & Arnou"
+ },
+ {
   "id": "2026-10-13-di",
   "datum": "2026-10-13",
   "zitting": "Di Z 7",
