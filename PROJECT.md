@@ -19,7 +19,7 @@ De oude Google Sites-site (https://sites.google.com/site/bceeklo, beheerd door i
 - [x] Live op https://bceeklo.be (Netlify-project bc-eeklo, DNS bij Level27: A @ → 75.2.60.5, CNAME www → bc-eeklo.netlify.app.)
 - [ ] www.bceeklo.be: CNAME-waarde controleren (moet eindigen op een punt)
 - [x] Lessensite op https://lessen.bceeklo.be (Netlify-project prismatic-sable-21bc03, CNAME lessen), gelinkt vanaf homepage
-- [ ] Kalender automatisch uit Google-agenda bc.eeklo@gmail.com
+- [x] Kalender automatisch uit Google-agenda bc.eeklo@gmail.com (tools/kalender_naar_data.py, via de robot; voorbije zittingen verdwijnen vanzelf)
 - [x] Pagina club.html: geschiedenis, bestuur, clubkampioenen, ranking-uitleg, Kroegendrive, recreantentornooi, pers, partner gezocht, ledenzone, suggesties, links (documenten gelinkt uit Drive bc.eeklo@gmail.com)
 - [x] Rankingpagina ranking.html (dinsdag/woensdag, plaats/naam/zittingen/gem., detail per zitting) + tools/ranking_naar_data.py
 - [x] Uitslagen-tabs: Clubdrives · Ranking · Kroegendrive · Recreantentornooi · Clubkampioenen (kampioenen/ranking/evenementen weg uit club.html)
