@@ -1,0 +1,48 @@
+name: Uitslagen verwerken
+
+# Kijkt elk halfuur (07:00–23:00 Belgische tijd) in de Drive-map "Uitslagen website/Nieuw".
+# Meteen laten lopen: tabblad Actions > "Uitslagen verwerken" > Run workflow.
+on:
+  schedule:
+    - cron: "*/30 5-21 * * *"   # UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: uitslagen
+  cancel-in-progress: false
+
+jobs:
+  verwerk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: tools/requirements.txt
+
+      - name: Benodigdheden installeren
+        run: pip install -r tools/requirements.txt
+
+      - name: Nieuwe uitslagen uit Google Drive verwerken
+        id: verwerk
+        env:
+          GOOGLE_SA_KEY: ${{ secrets.GOOGLE_SA_KEY }}
+          DRIVE_MAP_ID: ${{ vars.DRIVE_MAP_ID }}
+        run: python tools/verwerk_drive.py
+
+      - name: Website bijwerken
+        if: steps.verwerk.outputs.gewijzigd == 'ja'
+        run: |
+          git config user.name "Uitslagen-robot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/data
+          git commit -m "Nieuwe uitslagen $(date +'%Y-%m-%d %H:%M')"
+          git pull --rebase
+          git push
