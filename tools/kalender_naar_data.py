@@ -9,6 +9,7 @@ import argparse
 import datetime as dt
 import json
 import os
+import re
 import sys
 import urllib.request
 from zoneinfo import ZoneInfo
@@ -20,15 +21,30 @@ STANDAARD_ICS = "https://calendar.google.com/calendar/ical/bc.eeklo%40gmail.com/
 TZ = ZoneInfo("Europe/Brussels")
 
 
+STANDAARD_UUR = {"di": "19.30", "wo": "14.00"}
+NAAM = {"di": "Avondcompetitie", "wo": "Namiddagcompetitie"}
+
+
 def soort_van(titel):
     t = titel.lower()
     if "geen" in t and "bridge" in t:
         return "geen"
-    if "avond" in t or "dinsdag" in t:
+    if "avond" in t or "dinsdag" in t or re.match(r"din?\b", t):
         return "di"
-    if "namiddag" in t or "woensdag" in t:
+    if "namiddag" in t or "woensdag" in t or re.match(r"woe?\b", t):
         return "wo"
     return "event"
+
+
+def mooie_titel(titel, soort):
+    """"Di Comp 08" -> "Avondcompetitie · zitting 08"; "12° Kroegendrive" -> "12de Kroegendrive"."""
+    m = re.match(r"(?i)(din?|woe?)\s+comp\w*\.?\s*(?:zitting\s*)?(\d+)\s*$", titel)
+    if m and soort in NAAM:
+        return f"{NAAM[soort]} · zitting {int(m.group(2)):02d}"
+    def rangtelwoord(m):
+        n = int(m.group(1))
+        return f"{n}{'ste' if n in (1, 8) or n >= 20 else 'de'} "
+    return re.sub(r"(\d+)\s*°\s*", rangtelwoord, titel).strip()
 
 
 def lees(ics_bytes, vandaag=None):
@@ -48,7 +64,10 @@ def lees(ics_bytes, vandaag=None):
         else:  # hele dag; DTEND is exclusief
             datum, tijd = start, ""
             laatste = (eind - dt.timedelta(days=1)) if isinstance(eind, dt.date) else start
-        item = {"datum": datum.isoformat(), "tijd": tijd, "titel": titel, "soort": soort_van(titel)}
+        soort = soort_van(titel)
+        if not tijd and soort in STANDAARD_UUR:
+            tijd = STANDAARD_UUR[soort]
+        item = {"datum": datum.isoformat(), "tijd": tijd, "titel": mooie_titel(titel, soort), "soort": soort}
         if laatste > datum:
             item["tot"] = laatste.isoformat()
         plaats = str(ev.get("LOCATION", "")).strip()
@@ -56,7 +75,17 @@ def lees(ics_bytes, vandaag=None):
             item["plaats"] = plaats
         items.append(item)
     items.sort(key=lambda i: (i["datum"], i["tijd"] or "99", i["titel"]))
-    return items
+    # dezelfde activiteit op opeenvolgende dagen (bv. festival za + zo) -> één regel "29–30 jan"
+    samen = []
+    for i in items:
+        v = samen[-1] if samen else None
+        if (v and v["soort"] == "event" and i["soort"] == "event" and not v["tijd"] and not i["tijd"]
+                and v["titel"] == i["titel"]
+                and dt.date.fromisoformat(v.get("tot", v["datum"])) + dt.timedelta(days=1) == dt.date.fromisoformat(i["datum"])):
+            v["tot"] = i.get("tot", i["datum"])
+            continue
+        samen.append(i)
+    return samen
 
 
 def schrijf(items, site="site"):
