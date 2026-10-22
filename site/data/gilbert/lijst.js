@@ -16,5 +16,14 @@ window.ZITTINGEN = [
   "spellen": 28,
   "winnaar": "Claeys & Willems",
   "titel": "2de Drive Gilbert"
+ },
+ {
+  "id": "2023-06-20",
+  "datum": "2023-06-20",
+  "zitting": "Drive Gilbert",
+  "paren": 28,
+  "spellen": 28,
+  "winnaar": "Van Acker & Van Daele",
+  "titel": "1ste Drive Gilbert"
  }
 ];
