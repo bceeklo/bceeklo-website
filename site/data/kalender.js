@@ -1,6 +1,5 @@
 /* Automatisch gemaakt uit de Google Agenda van de club (tools/kalender_naar_data.py). */
 window.KALENDER = [
-{"datum": "2026-10-21", "tijd": "14.00", "titel": "Namiddagcompetitie · zitting 07", "soort": "wo"},
 {"datum": "2026-10-27", "tijd": "19.30", "titel": "Avondcompetitie · zitting 09", "soort": "di"},
 {"datum": "2026-10-28", "tijd": "14.00", "titel": "Namiddagcompetitie · zitting 08", "soort": "wo"},
 {"datum": "2026-11-03", "tijd": "19.30", "titel": "Avondcompetitie · zitting 10", "soort": "di"},
