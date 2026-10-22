@@ -213,6 +213,11 @@ def zet_om(stand_pdf, fs_pdf, site=".", reeks="", titel=""):
             fouten.append(f"{p['kort']}: som spellen {som[p['id']]:.1f} ≠ stand {p['mp']}")
     if not paren:
         fouten.append("Geen paren gevonden in de verzamelstaat.")
+    elif all(p["mp"] == 0 and p["spellen"] == 0 for p in paren):
+        fouten.append("De verzamelstaat bevat geen scores (alle paren 0 MP en 0 spellen). "
+                      "Waarschijnlijk werd de pdf uit Bridge-It gemaakt vóór de spellen ingelezen/berekend waren.")
+    if not spellen:
+        fouten.append("De frequentiestaat bevat geen spellen.")
     if fouten:
         return f"Niet omgezet: {meta.get('zitting', '?')} ({meta.get('datum', '?')})", fouten
 
