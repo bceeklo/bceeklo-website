@@ -101,6 +101,17 @@
     return null;
   }
 
+  /* "Laureyns, Rita & Arnou, Hugo" -> "Rita Laureyns & Hugo Arnou" */
+  function volNaam(p) {
+    if (!p) return '';
+    if (!p.naam) return p.kort || '';
+    return String(p.naam).split('&').map(function (helft) {
+      var d = helft.split(',');
+      var achter = d[0].trim(), voor = d.slice(1).join(' ').trim();
+      return (voor ? voor + ' ' + achter : achter).replace(/\s+/g, ' ');
+    }).filter(Boolean).join(' & ');
+  }
+
   function naamZ(z) { return z.titel || z.zitting; }
   function kopZitting(z) {
     if (z.titel) return z.titel + ' · ' + datumLang(z.datum);
@@ -117,7 +128,7 @@
     var rijen = z.paren.map(function (p) {
       return '<a class="stand-rij" href="#/' + z.id + '/paar/' + p.id + '">' +
         '<span class="rang' + (p.rang === 1 ? ' p1' : '') + '">' + p.rang + '</span>' +
-        '<span class="paarnaam">' + esc(p.kort) + '<small>Paar ' + esc(p.id) + ' · ' + p.spellen + ' spellen</small></span>' +
+        '<span class="paarnaam">' + esc(volNaam(p)) + '<small>Paar ' + esc(p.id) + ' · ' + p.spellen + ' spellen</small></span>' +
         '<span class="balk"><span class="b"><i style="width:' + Math.min(100, p.pct) + '%"></i></span><strong>' + nl(p.pct, 2) + '%</strong></span>' +
         '<span class="mp r">' + nl(p.mp, 1) + ' MP</span></a>';
     }).join('');
@@ -188,12 +199,12 @@
           '<span class="pijl" aria-hidden="true">›</span></a>';
       }).join('');
       return '<section class="ronde"><div class="ronde-kop"><h2>Ronde ' + (i + 1) + ' · ' + r.kant + '</h2>' +
-        '<span class="tegen">tegen ' + (t ? '<a href="#/' + z.id + '/paar/' + t.id + '">' + esc(t.kort) + '</a>' : '?') + '</span>' +
+        '<span class="tegen">tegen ' + (t ? '<a href="#/' + z.id + '/paar/' + t.id + '">' + esc(volNaam(t)) + '</a>' : '?') + '</span>' +
         '<span class="muted">gemiddeld <strong class="pct ' + pctClass(gem) + '">' + nl(gem, 1) + '%</strong></span></div>' + regels + '</section>';
     }).join('');
     return '<p class="kruim"><a href="#/' + z.id + '">‹ Stand ' + esc(naamZ(z)) + '</a></p>' +
       '<div class="titelrij"><div><p class="label" style="color:var(--blauw)">Persoonlijke uitslag · paar ' + esc(p.id) + '</p>' +
-      '<h1>' + esc(p.kort) + '</h1><p class="muted">' + esc(p.naam.replace(/,/g, '')) + '</p></div></div>' +
+      '<h1>' + esc(volNaam(p)) + '</h1></div></div>' +
       '<div class="samenvatting">' +
       '<div class="stat"><b>' + p.rang + '<small style="font-size:18px">/' + z.paren.length + '</small></b><span>rangschikking</span></div>' +
       '<div class="stat"><b>' + nl(p.pct, 2) + '%</b><span>score</span></div>' +
@@ -232,7 +243,7 @@
 
     function naam(id) {
       var p = z.paarIdx[id];
-      return p ? '<a href="#/' + z.id + '/paar/' + id + '">' + esc(p.kort) + '</a>' : '–';
+      return p ? '<a href="#/' + z.id + '/paar/' + id + '">' + esc(volNaam(p)) + '</a>' : '–';
     }
     var rijen = s.tafels.map(function (t) {
       var uit = van && (t.nsId === van || t.owId === van);
@@ -249,7 +260,7 @@
     }).join('');
 
     var terug = paar
-      ? '<a href="#/' + z.id + '/paar/' + van + '">‹ ' + esc(paar.kort) + '</a> <span class="muted">·</span> <a href="#/' + z.id + '">Stand</a>'
+      ? '<a href="#/' + z.id + '/paar/' + van + '">‹ ' + esc(volNaam(paar)) + '</a> <span class="muted">·</span> <a href="#/' + z.id + '">Stand</a>'
       : '<a href="#/' + z.id + '">‹ Stand ' + esc(naamZ(z)) + '</a>';
     return '<p class="kruim">' + terug + '</p>' +
       '<div class="titelrij"><div><p class="label" style="color:var(--blauw)">' + esc(naamZ(z)) + ' · ' + esc(datumLang(z.datum)) + '</p>' +
