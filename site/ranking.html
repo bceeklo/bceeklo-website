@@ -17,9 +17,6 @@ main{padding-top:22px;padding-bottom:20px}
 .titelrij{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px;margin-bottom:18px}
 .titelrij h1{margin:0;font-size:clamp(30px,5vw,44px)}
 .titelrij p{margin:4px 0 0}
-.tabs{display:flex;gap:6px;background:var(--blauw-licht);padding:5px;border-radius:14px;width:max-content;max-width:100%}
-.tabs button{font:inherit;font-weight:700;font-size:17px;border:0;background:transparent;color:var(--blauw);padding:10px 18px;border-radius:10px;cursor:pointer;min-height:44px}
-.tabs button[aria-selected="true"]{background:var(--blauw);color:#fff}
 .info{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;margin:16px 0 14px;color:var(--grijs);font-size:16px}
 .zoek{display:flex;align-items:center;gap:8px;border:1px solid var(--lijn);border-radius:12px;padding:0 12px;max-width:360px;margin-bottom:14px;background:#fff}
 .zoek input{font:inherit;border:0;outline:0;padding:10px 0;min-height:44px;flex:1;min-width:0;background:transparent;color:var(--inkt)}
@@ -64,8 +61,6 @@ a.z:hover,a.z:focus-visible{border-color:var(--blauw);box-shadow:0 0 0 2px var(-
   .rij .aantal{display:none}
   .rij .naam small{display:block;font-weight:400;font-size:14px;color:var(--grijs)}
   .detail{padding:6px 12px 16px}
-  .tabs{width:100%}
-  .tabs button{flex:1;font-size:15px;padding:10px 6px}
   .rang small{font-size:10px}
 }
 @media (min-width:621px){ .rij .naam small{display:none} }
@@ -78,7 +73,8 @@ a.z:hover,a.z:focus-visible{border-color:var(--blauw);box-shadow:0 0 0 2px var(-
     <nav class="menu" aria-label="Hoofdmenu">
       <a href="index.html#spelen">Spelen</a>
       <a href="index.html#kalender">Kalender</a>
-      <a href="uitslagen.html" aria-current="page">Uitslagen</a>
+      <a href="uitslagen.html">Uitslagen</a>
+      <a href="ranking.html" aria-current="page">Ranking</a>
       <a href="club.html">Onze club</a>
       <a href="index.html#lessen">Bridge leren</a>
       <a href="index.html#lid">Lid worden</a>
@@ -88,12 +84,9 @@ a.z:hover,a.z:focus-visible{border-color:var(--blauw);box-shadow:0 0 0 2px var(-
 </header>
 
 <main class="wrap">
-  <nav class="subnav" aria-label="Uitslagen">
-    <a href="uitslagen.html">Clubdrives</a>
-    <a href="ranking.html" aria-current="page">Ranking</a>
-    <a href="kroegendrive.html">Kroegendrive</a>
-    <a href="gilbert.html">Drive Gilbert</a>
-    <a href="recreanten.html">Recreantentornooi</a>
+  <nav class="subnav" aria-label="Ranking">
+    <a id="tab-di" href="#di" aria-current="page">Dinsdag</a>
+    <a id="tab-wo" href="#wo">Woensdag</a>
     <a href="kampioenen.html">Clubkampioenen</a>
   </nav>
 
@@ -101,10 +94,6 @@ a.z:hover,a.z:focus-visible{border-color:var(--blauw);box-shadow:0 0 0 2px var(-
     <div>
       <p class="label" style="color:var(--blauw)">Clubcompetitie</p>
       <h1>Ranking</h1>
-    </div>
-    <div class="tabs" role="tablist" aria-label="Competitie">
-      <button role="tab" id="tab-di" aria-selected="true" aria-controls="lijst">Dinsdagavond</button>
-      <button role="tab" id="tab-wo" aria-selected="false" aria-controls="lijst">Woensdagnamiddag</button>
     </div>
   </div>
 
@@ -161,7 +150,7 @@ a.z:hover,a.z:focus-visible{border-color:var(--blauw);box-shadow:0 0 0 2px var(-
   function datum(iso) { if (!iso) return ''; var d = new Date(iso + 'T12:00:00'); return d.getDate() + ' ' + MAAND[d.getMonth()] + ' ' + d.getFullYear(); }
 
   function toon() {
-    ['di', 'wo'].forEach(function (k) { document.getElementById('tab-' + k).setAttribute('aria-selected', k === actief ? 'true' : 'false'); });
+    ['di', 'wo'].forEach(function (k) { var t = document.getElementById('tab-' + k); if (k === actief) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current'); });
     var r = data[actief];
     if (!r) { rijenEl.innerHTML = '<p class="leeg-lijst">Nog geen ranking voor deze competitie.</p>'; infoEl.textContent = ''; return; }
     infoEl.innerHTML = '<span><strong>' + esc(r.competitie) + '</strong></span><span>Stand na ' + r.zittingen.length + ' zittingen</span>' +
@@ -199,11 +188,7 @@ a.z:hover,a.z:focus-visible{border-color:var(--blauw);box-shadow:0 0 0 2px var(-
     var id = b.parentNode.getAttribute('data-id');
     open = (open === id) ? null : id; toon();
   });
-  ['di', 'wo'].forEach(function (k) {
-    document.getElementById('tab-' + k).addEventListener('click', function () {
-      actief = k; open = null; history.replaceState(null, '', '#' + k); toon();
-    });
-  });
+  window.addEventListener('hashchange', function () { actief = (location.hash === '#wo') ? 'wo' : 'di'; open = null; toon(); });
   zoekEl.addEventListener('input', function () { open = null; toon(); });
   toon();
 })();
