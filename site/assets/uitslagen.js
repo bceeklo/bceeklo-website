@@ -71,8 +71,9 @@
       return;
     }
     var html;
-    if (r.soort === 'paar' && z.paarIdx[r.id]) html = paarView(z, r.id);
-    else if (r.soort === 'spel') html = spelView(z, parseInt(r.id, 10), r.van);
+    var detail = z.spellen && z.spellen.length;
+    if (detail && r.soort === 'paar' && z.paarIdx[r.id]) html = paarView(z, r.id);
+    else if (detail && r.soort === 'spel') html = spelView(z, parseInt(r.id, 10), r.van);
     else html = standView(z, lijst);
     app.innerHTML = html;
     var sel = document.getElementById('kies');
@@ -125,14 +126,17 @@
       return '<option value="' + esc(s.id) + '"' + (s.id === z.id ? ' selected' : '') + '>' +
         (s.titel ? esc(s.titel) + ' · ' + esc(s.datum.slice(0, 4)) : esc(datumKort(s.datum)) + ' · ' + esc(s.zitting)) + '</option>';
     }).join('');
+    var detail = !!(z.spellen && z.spellen.length);  /* zonder spellen: enkel eindstand (historiek) */
     var rijen = z.paren.map(function (p) {
-      return '<a class="stand-rij" href="#/' + z.id + '/paar/' + p.id + '">' +
+      var tag = detail ? 'a' : 'div';
+      var sub = (p.paar === null ? '' : 'Paar ' + esc(p.paar || p.id) + ' · ') + p.spellen + ' spellen';
+      return '<' + tag + ' class="stand-rij"' + (detail ? ' href="#/' + z.id + '/paar/' + p.id + '"' : ' role="listitem"') + '>' +
         '<span class="rang' + (p.rang === 1 ? ' p1' : '') + '">' + p.rang + '</span>' +
-        '<span class="paarnaam">' + esc(volNaam(p)) + '<small>Paar ' + esc(p.id) + ' · ' + p.spellen + ' spellen</small></span>' +
+        '<span class="paarnaam">' + esc(volNaam(p)) + '<small>' + sub + '</small></span>' +
         '<span class="balk"><span class="b"><i style="width:' + Math.min(100, p.pct) + '%"></i></span><strong>' + nl(p.pct, 2) + '%</strong></span>' +
-        '<span class="mp r">' + nl(p.mp, 1) + ' MP</span></a>';
+        '<span class="mp r">' + nl(p.mp, 1) + ' MP</span></' + tag + '>';
     }).join('');
-    var spellen = z.spellen.map(function (s) {
+    var spellen = (z.spellen || []).map(function (s) {
       return '<a class="pil" href="#/' + z.id + '/spel/' + s.nr + '">' + s.nr + '</a>';
     }).join(' ');
     var pos = lijst.map(function (s) { return s.id; }).indexOf(z.id);
@@ -145,15 +149,16 @@
         (nieuwer ? '<a class="pil" href="#/' + esc(nieuwer.id) + '" aria-label="Volgende zitting">›</a>' : '<span class="pil uit" aria-hidden="true">›</span>') +
         '</div>'
       : '';
-    var info = [z.paren.length + ' paren', z.spellen.length + ' spellen'];
+    var nSpellen = detail ? z.spellen.length : Math.max.apply(null, z.paren.map(function (p) { return p.spellen || 0; }));
+    var info = [z.paren.length + ' paren', nSpellen + ' spellen'];
     if (z.telling) info.push(z.telling);
     return balk +
       '<div class="titelrij"><div><p class="label" style="color:var(--blauw)">Uitslag ' + esc(z.titel ? '' : z.zitting) + '</p>' +
       '<h1>' + esc(kopZitting(z)) + '</h1><p class="muted">' + esc(info.join(' · ')) +
-      '. Tik op een paar voor de persoonlijke uitslag.</p></div></div>' +
-      '<section class="spellenblok" aria-labelledby="spellen-kop">' +
+      (detail ? '. Tik op een paar voor de persoonlijke uitslag.' : '. Enkel de eindstand is beschikbaar.') + '</p></div></div>' +
+      (detail ? '<section class="spellenblok" aria-labelledby="spellen-kop">' +
       '<h2 id="spellen-kop">Spellen <span class="muted">· verdeling en alle resultaten</span></h2>' +
-      '<div class="spellenrij">' + spellen + '</div></section>' +
+      '<div class="spellenrij">' + spellen + '</div></section>' : '') +
       '<div class="stand" role="list"><div class="stand-kop"><span>#</span><span>Paar</span><span class="r">Score</span><span class="r">MP</span></div>' + rijen + '</div>';
   }
 
