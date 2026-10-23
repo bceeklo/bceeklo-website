@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ledenzone (test) · Bridgeclub Eeklo</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Cinzel:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<link rel="icon" type="image/png" href="/assets/img/favicon-64.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<meta name="theme-color" content="#0B2347">
+<meta property="og:title" content="Bridgeclub Eeklo">
+<meta property="og:description" content="Recreatieve bridgeclub in Eeklo: dinsdagavond en woensdagnamiddag competitie.">
+<meta property="og:image" content="/assets/img/og-image.jpg">
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+main{padding-top:36px;padding-bottom:50px}
+.balk{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px}
+.balk h1{margin:0;font-size:clamp(28px,5vw,40px)}
+.wie{font-size:16px}
+.wie button{font:inherit;font-weight:700;border:1px solid var(--blauw-rand);background:var(--blauw-licht);color:var(--blauw-donker);border-radius:10px;padding:8px 14px;min-height:40px;cursor:pointer;margin-left:8px}
+.test{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--goud-zacht);color:var(--amber);border-radius:99px;padding:3px 10px;margin-bottom:10px}
+.kaart{margin-bottom:16px}
+.kaart h2{margin:0 0 6px;font-size:22px}
+</style>
+</head>
+<body>
+<header class="kop">
+  <div class="wrap">
+    <a class="logo" href="/index.html"><img src="/assets/img/logo-160.png" alt="" width="56" height="56"><b>Bridgeclub<small>EEKLO</small></b></a>
+    <nav class="menu" aria-label="Hoofdmenu">
+      <a href="/index.html#spelen">Spelen</a>
+      <a href="/index.html#kalender">Kalender</a>
+      <a href="/uitslagen.html">Uitslagen</a>
+      <a href="/ranking.html">Ranking</a>
+      <a href="/club.html">Onze club</a>
+      <a href="/index.html#lessen">Bridge leren</a>
+      <a href="/index.html#lid">Lid worden</a>
+      <a href="/index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+  <span class="test">Testversie</span>
+  <div class="balk">
+    <h1>Ledenzone</h1>
+    <div class="wie"><span id="wie" class="muted"></span><button type="button" id="af">Afmelden</button></div>
+  </div>
+  <section class="kaart">
+    <h2>Welkom</h2>
+    <p class="muted" style="margin:0">Als je dit ziet, werkt de afscherming: deze pagina wordt enkel getoond aan wie ingelogd is met een adres op de lijst. Hier komt later de inhoud voor leden (ledenlijst, verslagen, documenten…).</p>
+  </section>
+</main>
+<footer class="voet">
+  <div class="wrap">
+    <div><img class="voet-logo" src="/assets/img/logo-160.png" alt="" width="76" height="76"><b style="font-family:var(--merk);letter-spacing:.04em">Bridgeclub Eeklo</b><br>Kantine K.F.C. Eeklo · Zandvleuge 66, 9900 Eeklo</div>
+    <div>Vragen over de ledenzone?<br><a href="mailto:webmaster@bceeklo.be">webmaster@bceeklo.be</a></div>
+  </div>
+</footer>
+<script>
+fetch('/.netlify/functions/ledenzone?actie=wie').then(function (r) { return r.json(); }).then(function (w) {
+  if (w.email) document.getElementById('wie').textContent = 'Ingelogd als ' + w.email;
+});
+document.getElementById('af').onclick = function () {
+  fetch('/.netlify/functions/ledenzone', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ actie: 'afmelden' }) })
+    .then(function () { location.href = '/'; });
+};
+</script>
+</body>
+</html>

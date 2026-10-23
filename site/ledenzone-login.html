@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ledenzone · Bridgeclub Eeklo</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Cinzel:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<link rel="icon" type="image/png" href="assets/img/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<meta name="theme-color" content="#0B2347">
+<meta property="og:title" content="Bridgeclub Eeklo">
+<meta property="og:description" content="Recreatieve bridgeclub in Eeklo: dinsdagavond en woensdagnamiddag competitie.">
+<meta property="og:image" content="assets/img/og-image.jpg">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+main{padding-top:40px;padding-bottom:50px}
+.kaart{max-width:520px;margin:0 auto;text-align:center}
+.kaart h1{margin:0 0 8px;font-size:clamp(28px,5vw,38px)}
+.kaart p{margin:0 0 18px}
+#knop{display:flex;justify-content:center;min-height:44px;margin:22px 0 6px}
+.melding{margin-top:18px;padding:14px 16px;border-radius:12px;background:var(--goud-zacht);text-align:left;font-size:17px}
+.melding.fout{background:#FBECEC}
+.test{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--goud-zacht);color:var(--amber);border-radius:99px;padding:3px 10px;margin-bottom:12px}
+</style>
+</head>
+<body>
+<header class="kop">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="assets/img/logo-160.png" alt="" width="56" height="56"><b>Bridgeclub<small>EEKLO</small></b></a>
+    <nav class="menu" aria-label="Hoofdmenu">
+      <a href="index.html#spelen">Spelen</a>
+      <a href="index.html#kalender">Kalender</a>
+      <a href="uitslagen.html">Uitslagen</a>
+      <a href="ranking.html">Ranking</a>
+      <a href="club.html">Onze club</a>
+      <a href="index.html#lessen">Bridge leren</a>
+      <a href="index.html#lid">Lid worden</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+  <div class="kaart">
+    <span class="test">Testversie</span>
+    <h1>Ledenzone</h1>
+    <p class="muted">Dit deel van de site is enkel voor leden van Bridgeclub Eeklo. Log in met je Google-account.</p>
+    <div id="knop"></div>
+    <div id="melding" aria-live="polite"></div>
+  </div>
+</main>
+<footer class="voet">
+  <div class="wrap">
+    <div><img class="voet-logo" src="assets/img/logo-160.png" alt="" width="76" height="76"><b style="font-family:var(--merk);letter-spacing:.04em">Bridgeclub Eeklo</b><br>Kantine K.F.C. Eeklo · Zandvleuge 66, 9900 Eeklo</div>
+    <div>Vragen over de ledenzone?<br><a href="mailto:webmaster@bceeklo.be">webmaster@bceeklo.be</a></div>
+  </div>
+</footer>
+<script>
+(function () {
+  var melding = document.getElementById('melding');
+  var terug = new URLSearchParams(location.search).get('terug') || '/ledenzone_test/';
+  if (!/^\/ledenzone_test(\/|$)/.test(terug)) terug = '/ledenzone_test/';
+  function toon(html, fout) { melding.innerHTML = '<div class="melding' + (fout ? ' fout' : '') + '">' + html + '</div>'; }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  var API = '/.netlify/functions/ledenzone';
+
+  function aangemeld(r) {
+    toon('Even controleren…');
+    fetch(API, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ actie: 'login', credential: r.credential }) })
+      .then(function (x) { return x.json().then(function (d) { return { ok: x.ok, d: d }; }); })
+      .then(function (a) {
+        if (a.ok) { location.replace(terug); return; }
+        if (a.d.fout === 'geen-toegang') {
+          toon('Je bent ingelogd als <strong>' + esc(a.d.email) + '</strong>, maar dat adres staat (nog) niet op de lijst van leden met toegang.<br>Vraag toegang via <a href="mailto:webmaster@bceeklo.be">webmaster@bceeklo.be</a>, of probeer een ander Google-account.', true);
+          if (window.google) google.accounts.id.disableAutoSelect();
+        } else toon(esc(a.d.fout || 'Er ging iets mis.'), true);
+      })
+      .catch(function () { toon('Geen verbinding met de site. Probeer opnieuw.', true); });
+  }
+
+  fetch(API + '?actie=wie').then(function (x) { return x.json(); }).then(function (w) {
+    if (w.email) { location.replace(terug); return; }
+    return fetch(API + '?actie=config').then(function (x) { return x.json(); }).then(function (c) {
+      if (!c.clientId) { toon('De ledenzone is nog niet ingesteld (' + esc(c.ontbreekt.join(', ')) + ').', true); return; }
+      var s = document.createElement('script');
+      s.src = 'https://accounts.google.com/gsi/client'; s.async = true;
+      s.onload = function () {
+        google.accounts.id.initialize({ client_id: c.clientId, callback: aangemeld, ux_mode: 'popup', locale: 'nl' });
+        google.accounts.id.renderButton(document.getElementById('knop'), { theme: 'filled_blue', size: 'large', shape: 'pill', text: 'signin_with', locale: 'nl' });
+      };
+      s.onerror = function () { toon('De Google-knop kon niet geladen worden. Controleer je internetverbinding.', true); };
+      document.head.appendChild(s);
+    });
+  }).catch(function () { toon('De ledenzone is momenteel niet bereikbaar.', true); });
+})();
+</script>
+</body>
+</html>
