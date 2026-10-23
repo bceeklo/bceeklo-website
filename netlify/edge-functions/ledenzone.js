@@ -1,5 +1,7 @@
 // Schermt bceeklo.be/ledenzone af: zonder geldige login (zie functions/ledenzone.mjs) -> naar de loginpagina.
 // De lijst wordt bij elk bezoek opnieuw gecontroleerd: wie geschrapt wordt, verliest meteen de toegang.
+import { toegelaten } from '../lib/adressen.mjs';
+
 const env = (n) => (globalThis.Netlify && Netlify.env.get(n)) || '';
 
 async function geldig(waarde, geheim) {
@@ -20,9 +22,8 @@ async function geldig(waarde, geheim) {
 
 export default async (req, context) => {
   const geheim = env('LEDENZONE_GEHEIM');
-  const lijst = env('LEDENZONE_ADRESSEN').split(/[\s,;]+/).map((a) => a.trim().toLowerCase()).filter(Boolean);
   const email = geheim ? await geldig(context.cookies.get('lz_sessie'), geheim) : null;
-  if (email && lijst.includes(email)) {
+  if (email && (await toegelaten(env)).lijst.includes(email)) {
     const res = await context.next();
     res.headers.set('cache-control', 'private, no-store');
     res.headers.set('x-robots-tag', 'noindex, nofollow');

@@ -33,7 +33,17 @@ Bij voorkeur met een clubaccount, niet je persoonlijk account.
 |---|---|
 | `LEDENZONE_GOOGLE_CLIENT_ID` | de Client ID uit stap 1 |
 | `LEDENZONE_GEHEIM` | lange willekeurige tekst (bv. 40 tekens), niemand hoeft die te kennen |
-| `LEDENZONE_ADRESSEN` | e-mailadressen met toegang, gescheiden door komma's |
+| `LEDENZONE_ADRESSEN` | vaste adressen met toegang (bv. de webmaster), gescheiden door komma's |
+| `LEDENZONE_SHEET_ID` | ID van de Google Sheet met de ledenadressen (het stuk tussen `/d/` en `/edit` in de link) |
+| `LEDENZONE_SA_JSON` | volledige inhoud van het JSON-sleutelbestand van service-account `ledenzone-lezer` |
+
+### 3. Adressenlijst in een Google Sheet
+- Elk e-mailadres in de **eerste tab** van de Sheet krijgt toegang, in welke kolom het ook staat
+  (meerdere adressen in één cel mag ook). Kopteksten en andere kolommen worden genegeerd.
+- De Sheet wordt gedeeld met `ledenzone-lezer@bceeklo-website.iam.gserviceaccount.com` als **Lezer**.
+- Wijzigingen werken binnen ± 5 minuten, zonder deploy. Is de Sheet even onbereikbaar, dan blijft de laatst gekende lijst
+  gelden en de adressen uit `LEDENZONE_ADRESSEN` werken altijd.
+- Controle: <https://bceeklo.be/.netlify/functions/ledenzone?actie=status> toont hoeveel adressen er gevonden zijn en uit welke bron.
 
 Na het toevoegen of wijzigen: **Deploys › Trigger deploy** zodat de functies de nieuwe waarden zien.
 
@@ -44,6 +54,5 @@ Na het toevoegen of wijzigen: **Deploys › Trigger deploy** zodat de functies d
 4. "Afmelden" werkt; daarna wordt `/ledenzone` opnieuw tegengehouden.
 
 ## Later (definitieve versie)
-- Adressenlijst uit een Google Sheet in de clubmap halen, zodat het bestuur ze zelf bijhoudt.
 - Albums toevoegen: `py tools/album_uit_pdf.py <presentatie.pdf> --datum JJJJ-MM-DD --titel "..."`.
 - Eventueel een tweede inlogmanier (inloglink per mail) voor leden zonder Google-account.

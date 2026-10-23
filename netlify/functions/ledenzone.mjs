@@ -2,9 +2,12 @@
 // Instellingen in Netlify › Environment variables:
 //   LEDENZONE_GOOGLE_CLIENT_ID  OAuth-client-ID uit Google Cloud (type "Web application")
 //   LEDENZONE_GEHEIM            lange willekeurige tekst om de login-cookie te ondertekenen
-//   LEDENZONE_ADRESSEN          toegelaten e-mailadressen, gescheiden door komma's of nieuwe regels
+//   LEDENZONE_ADRESSEN          vaste toegelaten adressen (komma's), bv. de webmaster
+//   LEDENZONE_SHEET_ID          ID van de Google Sheet met de ledenadressen (optioneel)
+//   LEDENZONE_SA_JSON           JSON-sleutel van het service-account dat de Sheet mag lezen (optioneel)
 // Acties:  GET ?actie=config  ·  GET ?actie=wie  ·  POST {actie:"login", credential}  ·  POST {actie:"afmelden"}
 import crypto from 'node:crypto';
+import { toegelaten } from '../lib/adressen.mjs';
 
 const COOKIE = 'lz_sessie';
 const DUUR = 180 * 24 * 3600; // 180 dagen ingelogd blijven
@@ -18,9 +21,7 @@ function antwoord(status, body, extra = {}) {
     status, headers: { 'content-type': 'application/json', 'cache-control': 'no-store', ...extra },
   });
 }
-function adressen() {
-  return env('LEDENZONE_ADRESSEN').split(/[\s,;]+/).map((a) => a.trim().toLowerCase()).filter(Boolean);
-}
+async function adressen() { return (await toegelaten(env)).lijst; }
 const b64 = (s) => Buffer.from(s).toString('base64url');
 function teken(payload) { return crypto.createHmac('sha256', env('LEDENZONE_GEHEIM')).update(payload).digest('base64url'); }
 function maakSessie(email) {
@@ -42,7 +43,8 @@ function leesSessie(req) {
 const cookie = (waarde, maxAge) => `${COOKIE}=${waarde}; Path=/; Max-Age=${maxAge}; HttpOnly; Secure; SameSite=Lax`;
 
 export default async (req) => {
-  const ontbreekt = ['LEDENZONE_GOOGLE_CLIENT_ID', 'LEDENZONE_GEHEIM', 'LEDENZONE_ADRESSEN'].filter((n) => !env(n));
+  const ontbreekt = ['LEDENZONE_GOOGLE_CLIENT_ID', 'LEDENZONE_GEHEIM'].filter((n) => !env(n));
+  if (!env('LEDENZONE_ADRESSEN') && !env('LEDENZONE_SHEET_ID')) ontbreekt.push('LEDENZONE_ADRESSEN of LEDENZONE_SHEET_ID');
   const url = new URL(req.url);
 
   if (req.method === 'GET') {
@@ -50,7 +52,11 @@ export default async (req) => {
     if (actie === 'config') return antwoord(200, { clientId: env('LEDENZONE_GOOGLE_CLIENT_ID'), ontbreekt });
     if (actie === 'wie') {
       const e = ontbreekt.length ? null : leesSessie(req);
-      return antwoord(200, { email: e && adressen().includes(e) ? e : null });
+      return antwoord(200, { email: e && (await adressen()).includes(e) ? e : null });
+    }
+    if (actie === 'status') {  /* controle voor de webmaster: hoeveel adressen, uit welke bron (geen adressen zelf) */
+      const t = await toegelaten(env);
+      return antwoord(200, { aantal: t.lijst.length, bron: t.bron, fout: t.fout || null, ontbreekt });
     }
     return antwoord(400, { fout: 'Onbekende actie.' });
   }
@@ -71,7 +77,7 @@ export default async (req) => {
         || String(t.email_verified) !== 'true' || !email) {
       return antwoord(401, { fout: 'Dit Google-antwoord kon niet gecontroleerd worden.' });
     }
-    if (!adressen().includes(email)) return antwoord(403, { fout: 'geen-toegang', email });
+    if (!(await adressen()).includes(email)) return antwoord(403, { fout: 'geen-toegang', email });
     return antwoord(200, { ok: true, email }, { 'set-cookie': cookie(maakSessie(email), DUUR) });
   }
   return antwoord(400, { fout: 'Onbekende actie.' });
