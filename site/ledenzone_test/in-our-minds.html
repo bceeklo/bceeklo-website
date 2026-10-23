@@ -19,6 +19,7 @@
 .mem{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:22px 18px;margin-top:8px}
 .mem figure{margin:0;text-align:center}
 .mem img{width:150px;height:150px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 12px;filter:grayscale(.15);box-shadow:0 0 0 4px #fff,0 0 0 5px var(--goud-licht)}
+.mem .geenfoto{width:150px;height:150px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;background:var(--vlak);color:var(--grijs);font-family:var(--display);font-size:44px;box-shadow:0 0 0 4px #fff,0 0 0 5px var(--goud-licht)}
 .mem figcaption b{display:block;font-family:var(--display);font-size:21px}
 .mem figcaption span{color:var(--grijs)}
 </style>
@@ -58,7 +59,10 @@
 (function () {
   function esc(s) { return String(s || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   document.getElementById('mem').innerHTML = (window.IN_OUR_MINDS || []).map(function (p) {
-    return '<figure><img loading="lazy" src="/ledenzone_test/img/inourminds/' + esc(p.foto) + '" alt="' + esc(p.naam) + '"><figcaption><b>' + esc(p.naam) + '</b><span>† ' + esc(p.jaar) + '</span></figcaption></figure>';
+    var init = p.naam.split(' ').filter(function (w) { return /^[A-Z]/.test(w); }).map(function (w) { return w[0]; });
+    var beeld = p.foto ? '<img loading="lazy" src="/ledenzone_test/img/inourminds/' + esc(p.foto) + '" alt="' + esc(p.naam) + '">'
+      : '<span class="geenfoto" aria-hidden="true">' + esc(init[0] + (init[init.length - 1] || '')) + '</span>';
+    return '<figure>' + beeld + '<figcaption><b>' + esc(p.naam) + '</b>' + (p.jaar ? '<span>† ' + esc(p.jaar) + '</span>' : '') + '</figcaption></figure>';
   }).join('');
 })();
 </script>
