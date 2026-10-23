@@ -69,10 +69,10 @@ select{font:inherit;font-size:16px;padding:10px 12px;border-radius:10px;border:1
 .stat span{font-size:15px;color:var(--grijs)}
 
 /* rondes */
-.ronde{border:1px solid var(--lijn);border-radius:18px;overflow:hidden;margin-bottom:16px}
+.ronde{border:1px solid var(--lijn);border-radius:18px;overflow:hidden;margin-bottom:16px;max-width:640px}
 .ronde-kop{background:#F5F7FA;padding:14px 18px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;align-items:baseline;border-bottom:1px solid var(--lijn)}
 .ronde-kop h2{margin:0;font-size:20px}
-.ronde-kop .tegen{font-size:17px}
+.ronde-kop .tegen{font-size:17px;order:3;flex-basis:100%}
 .ronde-kop .tegen a{font-weight:700}
 .spelrij{display:grid;grid-template-columns:48px 92px 40px 64px 52px minmax(70px,1fr) 64px 20px;gap:8px;align-items:center;padding:12px 18px;text-decoration:none;color:var(--inkt);border-bottom:1px solid #EEF0F1;min-height:56px;font-variant-numeric:tabular-nums}
 .spelrij:last-child{border-bottom:0}
