@@ -114,7 +114,7 @@ section.blok h2{margin:0 0 8px;font-size:clamp(30px,4vw,40px);font-weight:700}
     <div class="agenda-rij"><span class="wanneer"><span class="stip" style="background:#BD964A"></span>wo 28 okt</span><span class="wat">Namiddagcompetitie · zitting 08</span><span class="muted">14.00 u</span></div>
     <div class="agenda-rij"><span class="wanneer"><span class="stip" style="background:var(--blauw)"></span>di 3 nov</span><span class="wat">Avondcompetitie · zitting 10</span><span class="muted">19.30 u</span></div>
     <div class="agenda-rij"><span class="wanneer"><span class="stip" style="background:#BD964A"></span>wo 4 nov</span><span class="wat">Namiddagcompetitie · zitting 09</span><span class="muted">14.00 u</span></div>
-    <div class="agenda-rij"><span class="wanneer"><span class="stip" style="background:var(--rood)"></span>za 19 dec</span><span class="wat">12de Kroegendrive BC Eeklo</span><span class="muted">info volgt</span></div>
+    <div class="agenda-rij"><span class="wanneer"><span class="stip" style="background:var(--rood)"></span>za 19 dec</span><span class="wat"><a href="kroegendrive-info.html">12de Kroegendrive BC Eeklo</a></span><a href="kroegendrive-info.html">Info &amp; inschrijven →</a></div>
     <div class="agenda-rij"><span class="wanneer"><span class="stip" style="background:var(--rood)"></span>29–30 dec</span><span class="wat">1ste Internationaal Bridgefestival Knokke-Heist</span><span class="muted">Knokke-Heist</span></div>
   </div>
 </section>
@@ -206,6 +206,8 @@ section.blok h2{margin:0 0 8px;font-size:clamp(30px,4vw,40px);font-weight:700}
     if (t) return a.getDate() + ' ' + M[a.getMonth()] + ' – ' + t.getDate() + ' ' + M[t.getMonth()];
     return D[a.getDay()] + ' ' + a.getDate() + ' ' + M[a.getMonth()];
   }
+  /* activiteiten met een eigen infopagina */
+  function infolink(e) { return /kroegendrive/i.test(e.titel) ? 'kroegendrive-info.html' : ''; }
   function min10(t) { var p = t.split('.'), m = +p[0] * 60 + +p[1] - 10; return Math.floor(m / 60) + '.' + ('0' + m % 60).slice(-2); }
   var nu = new Date(), vandaag = iso(nu), uur = nu.getHours() + nu.getMinutes() / 60;
   /* vandaag: tonen tot ± 3 uur na de start (een lopende zitting blijft dus nog even staan) */
@@ -224,10 +226,12 @@ section.blok h2{margin:0 0 8px;font-size:clamp(30px,4vw,40px);font-weight:700}
     var a = dag(e.datum), sub;
     if (e.soort === 'geen') sub = 'Geen bridge deze ' + (a.getDay() === 2 ? 'dinsdagavond' : a.getDay() === 3 ? 'woensdagnamiddag' : 'dag');
     else if (e.soort !== 'event' && e.tijd) sub = 'Start ' + e.tijd + ' u · aanwezig ' + min10(e.tijd) + ' u';
-    else sub = [e.tijd ? e.tijd + ' u' : '', e.plaats || ''].filter(Boolean).join(' · ') || 'Meer info volgt';
+    else sub = [e.tijd ? e.tijd + ' u' : '', e.plaats || ''].filter(Boolean).join(' · ') || (infolink(e) ? '' : 'Meer info volgt');
+    var l = infolink(e);
     return '<div class="dag' + (e.soort === 'event' ? ' ev' : e.soort === 'geen' ? ' geen' : '') + '"' + (extra || '') + '><div class="d"><small>' +
       D[a.getDay()].toUpperCase() + '</small><b>' + a.getDate() + '</b><span>' + M[a.getMonth()] + '</span></div><div><b>' +
-      esc(titel(e)) + '</b><div class="muted" style="font-size:16px">' + esc(sub) + '</div></div></div>';
+      (l ? '<a href="' + l + '">' + esc(titel(e)) + '</a>' : esc(titel(e))) + '</b><div class="muted" style="font-size:16px">' + esc(sub) +
+      (l ? (sub ? ' · ' : '') + '<a href="' + l + '">Info &amp; inschrijven →</a>' : '') + '</div></div></div>';
   }
   var v = document.getElementById('volgende');
   if (v) v.innerHTML = '<p class="label muted">Volgende speelmomenten</p>' + spel.map(function (e) { return blok(e); }).join('') +
@@ -235,9 +239,11 @@ section.blok h2{margin:0 0 8px;font-size:clamp(30px,4vw,40px);font-weight:700}
 
   var ag = document.getElementById('agenda');
   if (ag) ag.innerHTML = komend.slice(0, 8).concat(komend.slice(8).filter(function (e) { return e.soort === 'event'; }).slice(0, 2)).map(function (e) {
+    var l = infolink(e);
     var rechts = e.soort === 'geen' ? '' : (e.tijd ? e.tijd + ' u' : (e.plaats || 'info volgt'));
     return '<div class="agenda-rij' + (e.soort === 'geen' ? ' geen' : '') + '"><span class="wanneer"><span class="stip" style="background:' + (KLEUR[e.soort] || KLEUR.event) + '"></span>' +
-      esc(wanneer(e)) + '</span><span class="wat">' + esc(titel(e)) + '</span><span class="muted">' + esc(rechts) + '</span></div>';
+      esc(wanneer(e)) + '</span><span class="wat">' + (l ? '<a href="' + l + '">' + esc(titel(e)) + '</a>' : esc(titel(e))) + '</span>' +
+      (l ? '<a href="' + l + '">Info &amp; inschrijven →</a>' : '<span class="muted">' + esc(rechts) + '</span>') + '</div>';
   }).join('');
 })();
 </script>
