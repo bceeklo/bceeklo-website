@@ -1,0 +1,16 @@
+/* Ledenzone — gedeelde opmaak */
+main{padding-top:24px;padding-bottom:50px}
+.lz-balk{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;margin:0 0 6px}
+.lz-test{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--goud-zacht);color:var(--amber);border-radius:99px;padding:3px 10px}
+.lz-wie{font-size:15px;color:var(--grijs);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lz-wie button{font:inherit;font-weight:700;border:1px solid var(--blauw-rand);background:var(--blauw-licht);color:var(--blauw-donker);border-radius:10px;padding:7px 12px;min-height:40px;cursor:pointer}
+.lz-titel{margin:14px 0 6px;font-size:clamp(28px,5vw,42px)}
+.lz-intro{margin:0 0 22px;max-width:720px}
+.tegels{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.tegel{display:block;text-decoration:none;color:var(--inkt);border:1px solid var(--lijn);border-radius:18px;padding:20px 22px;min-height:130px}
+.tegel:hover,.tegel:focus-visible{border-color:var(--blauw-rand);background:var(--blauw-licht)}
+.tegel b{display:block;font-family:var(--display);font-size:22px;margin-bottom:4px;color:var(--blauw)}
+.tegel span{color:var(--grijs);font-size:16px}
+.zoekveld{font:inherit;font-size:18px;padding:11px 14px;border-radius:12px;border:1px solid var(--blauw-rand);min-height:48px;width:100%;max-width:420px;color:var(--inkt)}
+.zoekveld:focus{outline:3px solid var(--goud-licht);border-color:var(--blauw)}
+.leeg{padding:24px 0;color:var(--grijs)}

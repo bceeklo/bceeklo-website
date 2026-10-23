@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Foto's · Ledenzone · Bridgeclub Eeklo</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Cinzel:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<link rel="icon" type="image/png" href="/assets/img/favicon-64.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<meta name="theme-color" content="#0B2347">
+<meta property="og:title" content="Bridgeclub Eeklo">
+<meta property="og:description" content="Recreatieve bridgeclub in Eeklo: dinsdagavond en woensdagnamiddag competitie.">
+<meta property="og:image" content="/assets/img/og-image.jpg">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/ledenzone_test/lz.css">
+<style>
+.albums{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.album{display:block;text-decoration:none;color:var(--inkt);border:1px solid var(--lijn);border-radius:18px;overflow:hidden}
+.album:hover,.album:focus-visible{border-color:var(--blauw-rand)}
+.album img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#111}
+.album div{padding:12px 16px 14px}
+.album b{display:block;font-size:18px}
+.album span{color:var(--grijs);font-size:15px}
+.kruim{margin:12px 0 0;font-size:16px}.kruim a{font-weight:700;text-decoration:none}
+.raster{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:6px}
+.raster button{padding:0;border:0;background:#111;border-radius:12px;overflow:hidden;cursor:pointer;text-align:left;font:inherit}
+.raster img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+.raster small{display:block;background:#fff;color:var(--grijs);padding:6px 2px 0;font-size:14px;min-height:26px}
+.lb{position:fixed;inset:0;background:rgba(6,12,24,.94);z-index:50;display:none;flex-direction:column;align-items:center;justify-content:center;padding:16px}
+.lb.open{display:flex}
+.lb img{max-width:100%;max-height:calc(100vh - 120px);border-radius:8px}
+.lb p{color:#fff;margin:12px 0 0;font-size:17px;text-align:center;min-height:26px}
+.lb button{position:absolute;background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:99px;width:52px;height:52px;font-size:26px;cursor:pointer}
+.lb .sluit{top:14px;right:14px}.lb .vorige{left:14px;top:50%}.lb .volgende{right:14px;top:50%}
+@media (max-width:620px){.lb .vorige,.lb .volgende{top:auto;bottom:18px}}
+</style>
+</head>
+<body>
+<header class="kop">
+  <div class="wrap">
+    <a class="logo" href="/index.html"><img src="/assets/img/logo-160.png" alt="" width="56" height="56"><b>Bridgeclub<small>EEKLO</small></b></a>
+    <nav class="menu" aria-label="Hoofdmenu">
+      <a href="/index.html#spelen">Spelen</a>
+      <a href="/index.html#kalender">Kalender</a>
+      <a href="/uitslagen.html">Uitslagen</a>
+      <a href="/ranking.html">Ranking</a>
+      <a href="/club.html">Onze club</a>
+      <a href="/index.html#lessen">Bridge leren</a>
+      <a href="/index.html#lid">Lid worden</a>
+      <a href="/index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+  <div class="lz-balk"><span class="lz-test">Ledenzone · testversie</span><div class="lz-wie" id="lz-wie"><span></span><button type="button">Afmelden</button></div></div>
+  <nav class="subnav" aria-label="Ledenzone" style="margin:0 0 4px"><a href="index.html">Overzicht</a><a href="ledenlijst.html">Ledenlijst</a><a href="fotos.html" aria-current="page">Foto's</a><a href="in-our-minds.html">In our minds</a><a href="/privacy.html">Privacy</a></nav>
+  <div id="app"></div>
+  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Foto">
+    <img id="lb-img" alt="">
+    <p id="lb-txt"></p>
+    <button class="sluit" type="button" aria-label="Sluiten">×</button>
+    <button class="vorige" type="button" aria-label="Vorige foto">‹</button>
+    <button class="volgende" type="button" aria-label="Volgende foto">›</button>
+  </div>
+</main>
+<footer class="voet">
+  <div class="wrap">
+    <div><img class="voet-logo" src="/assets/img/logo-160.png" alt="" width="76" height="76"><b style="font-family:var(--merk);letter-spacing:.04em">Bridgeclub Eeklo</b><br>Kantine K.F.C. Eeklo · Zandvleuge 66, 9900 Eeklo</div>
+    <div>Vragen over de ledenzone?<br><a href="mailto:webmaster@bceeklo.be">webmaster@bceeklo.be</a></div>
+  </div>
+</footer>
+<script src="/ledenzone_test/lz.js"></script>
+<script src="/ledenzone_test/data/albums.js"></script>
+<script>
+(function () {
+  var A = window.ALBUMS || [], app = document.getElementById('app');
+  var M = ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+  function esc(s) { return String(s || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function dat(iso) { var d = new Date(iso + 'T12:00:00'); return d.getDate() + ' ' + M[d.getMonth()] + ' ' + d.getFullYear(); }
+  var huidig = null, idx = 0, lb = document.getElementById('lb');
+  function toonFoto(i) {
+    idx = (i + huidig.fotos.length) % huidig.fotos.length;
+    var f = huidig.fotos[idx];
+    document.getElementById('lb-img').src = huidig.map + f.src;
+    document.getElementById('lb-txt').textContent = (f.bijschrift ? f.bijschrift + ' · ' : '') + (idx + 1) + ' / ' + huidig.fotos.length;
+  }
+  function open(i) { toonFoto(i); lb.classList.add('open'); lb.querySelector('.sluit').focus(); }
+  function sluit() { lb.classList.remove('open'); }
+  lb.querySelector('.sluit').onclick = sluit;
+  lb.querySelector('.vorige').onclick = function () { toonFoto(idx - 1); };
+  lb.querySelector('.volgende').onclick = function () { toonFoto(idx + 1); };
+  lb.onclick = function (e) { if (e.target === lb) sluit(); };
+  document.addEventListener('keydown', function (e) {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') sluit(); else if (e.key === 'ArrowLeft') toonFoto(idx - 1); else if (e.key === 'ArrowRight') toonFoto(idx + 1);
+  });
+  var sx = null;
+  lb.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', function (e) { if (sx === null) return; var d = e.changedTouches[0].clientX - sx; if (Math.abs(d) > 50) toonFoto(idx + (d < 0 ? 1 : -1)); sx = null; });
+  function render() {
+    var id = decodeURIComponent(location.hash.slice(1));
+    huidig = A.filter(function (a) { return a.id === id; })[0] || null;
+    if (!huidig) {
+      app.innerHTML = '<h1 class="lz-titel">Foto\'s</h1><p class="muted lz-intro">Fotoalbums per activiteit, nieuwste eerst.</p>' +
+        (A.length ? '<div class="albums">' + A.map(function (a) {
+          return '<a class="album" href="#' + esc(a.id) + '"><img loading="lazy" src="' + esc(a.map + (a.cover || a.fotos[0].thumb)) + '" alt=""><div><b>' + esc(a.titel) + '</b><span>' + dat(a.datum) + ' · ' + a.fotos.length + ' foto\'s</span></div></a>';
+        }).join('') + '</div>' : '<p class="leeg">Nog geen albums.</p>');
+      document.title = "Foto's · Ledenzone · Bridgeclub Eeklo";
+      return;
+    }
+    app.innerHTML = '<p class="kruim"><a href="#">‹ Alle albums</a></p><h1 class="lz-titel">' + esc(huidig.titel) + '</h1>' +
+      '<p class="muted lz-intro">' + dat(huidig.datum) + (huidig.omschrijving ? ' · ' + esc(huidig.omschrijving) : '') + '</p>' +
+      '<div class="raster">' + huidig.fotos.map(function (f, i) {
+        return '<button type="button" data-i="' + i + '"><img loading="lazy" src="' + esc(huidig.map + f.thumb) + '" alt="' + esc(f.bijschrift) + '"><small>' + esc(f.bijschrift) + '</small></button>';
+      }).join('') + '</div>';
+    Array.prototype.forEach.call(app.querySelectorAll('[data-i]'), function (b) { b.onclick = function () { open(+b.getAttribute('data-i')); }; });
+    document.title = huidig.titel + ' · Ledenzone · Bridgeclub Eeklo';
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', render);
+  render();
+})();
+</script>
+</body>
+</html>

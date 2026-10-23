@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ledenzone (test) · Bridgeclub Eeklo</title>
+<title>Ledenzone · Ledenzone · Bridgeclub Eeklo</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Cinzel:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
@@ -14,15 +14,9 @@
 <meta property="og:description" content="Recreatieve bridgeclub in Eeklo: dinsdagavond en woensdagnamiddag competitie.">
 <meta property="og:image" content="/assets/img/og-image.jpg">
 <link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/ledenzone_test/lz.css">
 <style>
-main{padding-top:36px;padding-bottom:50px}
-.balk{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px}
-.balk h1{margin:0;font-size:clamp(28px,5vw,40px)}
-.wie{font-size:16px}
-.wie button{font:inherit;font-weight:700;border:1px solid var(--blauw-rand);background:var(--blauw-licht);color:var(--blauw-donker);border-radius:10px;padding:8px 14px;min-height:40px;cursor:pointer;margin-left:8px}
-.test{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--goud-zacht);color:var(--amber);border-radius:99px;padding:3px 10px;margin-bottom:10px}
-.kaart{margin-bottom:16px}
-.kaart h2{margin:0 0 6px;font-size:22px}
+
 </style>
 </head>
 <body>
@@ -42,15 +36,16 @@ main{padding-top:36px;padding-bottom:50px}
   </div>
 </header>
 <main class="wrap">
-  <span class="test">Testversie</span>
-  <div class="balk">
-    <h1>Ledenzone</h1>
-    <div class="wie"><span id="wie" class="muted"></span><button type="button" id="af">Afmelden</button></div>
+  <div class="lz-balk"><span class="lz-test">Ledenzone · testversie</span><div class="lz-wie" id="lz-wie"><span></span><button type="button">Afmelden</button></div></div>
+  <nav class="subnav" aria-label="Ledenzone" style="margin:0 0 4px"><a href="index.html" aria-current="page">Overzicht</a><a href="ledenlijst.html">Ledenlijst</a><a href="fotos.html">Foto's</a><a href="in-our-minds.html">In our minds</a><a href="/privacy.html">Privacy</a></nav>
+  <h1 class="lz-titel">Ledenzone</h1>
+  <p class="muted lz-intro">Welkom! Dit deel van de site is enkel zichtbaar voor leden van Bridgeclub Eeklo.</p>
+  <div class="tegels">
+    <a class="tegel" href="ledenlijst.html"><b>Ledenlijst</b><span>Contactgegevens van de leden, zoeken op naam.</span></a>
+    <a class="tegel" href="fotos.html"><b>Foto's</b><span>Fotoalbums van uitstappen en activiteiten.</span></a>
+    <a class="tegel" href="in-our-minds.html"><b>In our minds</b><span>Ter nagedachtenis van onze overleden leden.</span></a>
+    <a class="tegel" href="/privacy.html"><b>Privacyverklaring</b><span>Hoe de club omgaat met je persoonsgegevens.</span></a>
   </div>
-  <section class="kaart">
-    <h2>Welkom</h2>
-    <p class="muted" style="margin:0">Als je dit ziet, werkt de afscherming: deze pagina wordt enkel getoond aan wie ingelogd is met een adres op de lijst. Hier komt later de inhoud voor leden (ledenlijst, verslagen, documenten…).</p>
-  </section>
 </main>
 <footer class="voet">
   <div class="wrap">
@@ -58,14 +53,7 @@ main{padding-top:36px;padding-bottom:50px}
     <div>Vragen over de ledenzone?<br><a href="mailto:webmaster@bceeklo.be">webmaster@bceeklo.be</a></div>
   </div>
 </footer>
-<script>
-fetch('/.netlify/functions/ledenzone?actie=wie').then(function (r) { return r.json(); }).then(function (w) {
-  if (w.email) document.getElementById('wie').textContent = 'Ingelogd als ' + w.email;
-});
-document.getElementById('af').onclick = function () {
-  fetch('/.netlify/functions/ledenzone', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ actie: 'afmelden' }) })
-    .then(function () { location.href = '/'; });
-};
-</script>
+<script src="/ledenzone_test/lz.js"></script>
+
 </body>
 </html>
