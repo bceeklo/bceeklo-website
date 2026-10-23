@@ -56,3 +56,24 @@ h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:-.005em;line-
 /* kaartkleuren */
 .s{font-style:normal;font-variant-emoji:text;font-family:'Segoe UI Symbol','DejaVu Sans','Noto Sans Symbols 2',var(--tekst)}
 .s.h,.s.d{color:var(--rood)}
+
+/* hamburgermenu (gsm/tablet) — knop wordt toegevoegd door assets/menu.js */
+.menuknop{display:none}
+@media (max-width:960px){
+  .js-menu .kop .wrap{flex-wrap:nowrap}
+  .js-menu .menuknop{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:16px;font-weight:700;color:var(--blauw);
+    background:var(--blauw-licht);border:1px solid var(--blauw-rand);border-radius:12px;padding:0 14px;min-height:48px;cursor:pointer;flex:none}
+  .menuknop .streep{position:relative;display:block;width:20px;height:2px;background:currentColor;border-radius:2px;transition:background .15s}
+  .menuknop .streep::before,.menuknop .streep::after{content:"";position:absolute;left:0;width:20px;height:2px;background:currentColor;border-radius:2px;transition:transform .15s}
+  .menuknop .streep::before{top:-6px}.menuknop .streep::after{top:6px}
+  .menuknop[aria-expanded="true"] .streep{background:transparent}
+  .menuknop[aria-expanded="true"] .streep::before{transform:translateY(6px) rotate(45deg)}
+  .menuknop[aria-expanded="true"] .streep::after{transform:translateY(-6px) rotate(-45deg)}
+  .js-menu .menu{display:none;position:absolute;left:0;right:0;top:100%;background:var(--wit);flex-direction:column;gap:0;
+    border-bottom:3px solid var(--goud);box-shadow:0 14px 28px rgba(11,35,71,.16);padding:6px 0 10px;max-height:calc(100vh - 80px);overflow-y:auto}
+  .js-menu .menu.open{display:flex}
+  .js-menu .menu a{padding:14px 24px;font-size:18px;border-bottom:1px solid #EEF0F1;min-height:52px;display:flex;align-items:center}
+  .js-menu .menu a:last-child{border-bottom:0}
+  .js-menu .menu a[aria-current]{box-shadow:inset 4px 0 0 var(--goud);background:var(--blauw-licht)}
+  .js-menu .logo img{width:48px;height:48px}
+}
