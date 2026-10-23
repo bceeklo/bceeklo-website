@@ -7,7 +7,8 @@
   var REEKS = {
     club: { map: 'data/', lijst: 'data/zittingen.js', pagina: 'uitslagen.html', max: 5 },
     kroeg: { map: 'data/kroegendrive/', lijst: 'data/kroegendrive/lijst.js', pagina: 'kroegendrive.html', max: 3 },
-    gilbert: { map: 'data/gilbert/', lijst: 'data/gilbert/lijst.js', pagina: 'gilbert.html', max: 3 }
+    gilbert: { map: 'data/gilbert/', lijst: 'data/gilbert/lijst.js', pagina: 'gilbert.html', max: 3 },
+    recr: { map: 'data/recreanten/', lijst: 'data/recreanten/lijst.js', pagina: 'recreanten.html', max: 3 }
   };
   var lijsten = {}, zit = {}, ranking = {}, basis = null;
 
@@ -116,14 +117,15 @@
         '<span class="plaats"><b>' + (s.rang === 1 ? '<span class="goud">1</span>' : s.rang + (s.gedeeld ? '=' : '')) + '</b> / ' + r.spelers.length + '</span>' +
         '<span class="pct ' + pctKl(s.gem) + '">' + nl(s.gem, 2) + '%</span></a>';
     }).join('');
-    Promise.all(['club', 'kroeg', 'gilbert'].map(function (r) { return treffers(r, sleutel); })).then(function (t) {
+    Promise.all(['club', 'kroeg', 'gilbert', 'recr'].map(function (r) { return treffers(r, sleutel); })).then(function (t) {
       if (plat(inp.value) && location.hash.slice(1) && decodeURIComponent(location.hash.slice(1)) !== naam) return;
       function lijst(reeks, i, leeg) { return t[i].length ? t[i].map(function (x) { return rijHtml(reeks, x); }).join('') : '<p class="geen">' + leeg + '</p>'; }
       res.innerHTML = '<h2 class="speler">' + esc(naam) + '</h2>' +
         blok('Ranking', '<a href="ranking.html">Volledige ranking →</a>', rk || '<p class="geen">Niet in de ranking van dit seizoen.</p>') +
         blok('Laatste 5 clubdrives', '<a href="uitslagen.html">Alle clubdrives →</a>', lijst('club', 0, 'Geen clubdrives gevonden.')) +
         blok('Laatste 3 Kroegendrives', '<a href="kroegendrive.html">Alle Kroegendrives →</a>', lijst('kroeg', 1, 'Nog geen Kroegendrive gespeeld.')) +
-        blok('Laatste 3 Drives Gilbert', '<a href="gilbert.html">Alle Drives Gilbert →</a>', lijst('gilbert', 2, 'Nog geen Drive Gilbert gespeeld.'));
+        blok('Laatste 3 Drives Gilbert', '<a href="gilbert.html">Alle Drives Gilbert →</a>', lijst('gilbert', 2, 'Nog geen Drive Gilbert gespeeld.')) +
+        (t[3].length ? blok('Recreantentornooi', '<a href="recreanten.html">Alle uitslagen →</a>', lijst('recr', 3, '')) : '');
       document.title = naam + ' · Zoek op naam · Bridgeclub Eeklo';
     });
   }
