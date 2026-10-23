@@ -113,18 +113,34 @@
     }).filter(Boolean).join(' & ');
   }
 
-  function naamZ(z) { return z.titel || z.zitting; }
+  /* dag en zittingnummer uniform, wat Bridge-It ook als naam gaf ("Din Z 8", "WOE Z 4", "Di Z2") */
+  function dagVan(z) {
+    var m = /-(di|wo)$/.exec(z.id || '');
+    return m ? m[1] : (String(z.zitting || '').toLowerCase().indexOf('di') === 0 ? 'di' : 'wo');
+  }
+  function nrVan(z) { var m = /(\d+)\s*$/.exec(z.zitting || ''); return m ? parseInt(m[1], 10) : null; }
+  function zitNaam(z) { var n = nrVan(z); return n ? 'Zitting ' + n : (z.zitting || ''); }
+  function naamZ(z) { return z.titel || zitNaam(z); }
   function kopZitting(z) {
     if (z.titel) return z.titel + ' · ' + datumLang(z.datum);
-    return (z.zitting.toLowerCase().indexOf('di') === 0 ? 'Dinsdagavond' : 'Woensdagnamiddag') +
-      ' · ' + datumLang(z.datum);
+    return (dagVan(z) === 'di' ? 'Dinsdagavond' : 'Woensdagnamiddag') + ' · ' + datumLang(z.datum);
   }
 
   /* ---------- stand */
   function standView(z, lijst) {
+    var dagtabs = '';
+    if (!window.UITSLAG_MAP) {  /* clubdrives: eerst dinsdag of woensdag kiezen */
+      var dag = dagVan(z);
+      dagtabs = '<nav class="dagkeuze" aria-label="Dag">' + [['di', 'Dinsdag'], ['wo', 'Woensdag']].map(function (d) {
+        var eerste = lijst.filter(function (s) { return dagVan(s) === d[0]; })[0];
+        if (!eerste) return '';
+        return '<a href="#/' + esc(eerste.id) + '"' + (d[0] === dag ? ' aria-current="page"' : '') + '>' + d[1] + '</a>';
+      }).join('') + '</nav>';
+      lijst = lijst.filter(function (s) { return dagVan(s) === dag; });
+    }
     var opties = lijst.map(function (s) {
       return '<option value="' + esc(s.id) + '"' + (s.id === z.id ? ' selected' : '') + '>' +
-        (s.titel ? esc(s.titel) + ' · ' + esc(s.datum.slice(0, 4)) : esc(datumKort(s.datum)) + ' · ' + esc(s.zitting)) + '</option>';
+        (s.titel ? esc(s.titel) + ' · ' + esc(s.datum.slice(0, 4)) : esc(zitNaam(s)) + ' · ' + esc(datumKort(s.datum))) + '</option>';
     }).join('');
     var detail = !!(z.spellen && z.spellen.length);  /* zonder spellen: enkel eindstand (historiek) */
     var rijen = z.paren.map(function (p) {
@@ -142,7 +158,7 @@
     var pos = lijst.map(function (s) { return s.id; }).indexOf(z.id);
     var nieuwer = pos > 0 ? lijst[pos - 1] : null;      // lijst staat nieuwste eerst
     var ouder = pos >= 0 && pos < lijst.length - 1 ? lijst[pos + 1] : null;
-    var balk = (lijst.length > 1 || window.UITSLAG_MAP)
+    var balk = (lijst.length > 1 || window.UITSLAG_MAP || dagtabs)
       ? '<div class="zittingbalk">' +
         (ouder ? '<a class="pil" href="#/' + esc(ouder.id) + '" aria-label="Vorige zitting">‹</a>' : '<span class="pil uit" aria-hidden="true">‹</span>') +
         '<label class="kiezer"><span class="sr">Kies een zitting</span><select id="kies">' + opties + '</select></label>' +
@@ -152,8 +168,8 @@
     var nSpellen = detail ? z.spellen.length : Math.max.apply(null, z.paren.map(function (p) { return p.spellen || 0; }));
     var info = [z.paren.length + ' paren', nSpellen + ' spellen'];
     if (z.telling) info.push(z.telling);
-    return balk +
-      '<div class="titelrij"><div><p class="label" style="color:var(--blauw)">Uitslag ' + esc(z.titel ? '' : z.zitting) + '</p>' +
+    return dagtabs + balk +
+      '<div class="titelrij"><div><p class="label" style="color:var(--blauw)">Uitslag' + (z.titel ? '' : ' · ' + esc(zitNaam(z).toLowerCase())) + '</p>' +
       '<h1>' + esc(kopZitting(z)) + '</h1><p class="muted">' + esc(info.join(' · ')) +
       (detail ? '. Tik op een paar voor de persoonlijke uitslag.' : '. Enkel de eindstand is beschikbaar.') + '</p></div></div>' +
       (detail ? '<section class="spellenblok" aria-labelledby="spellen-kop">' +

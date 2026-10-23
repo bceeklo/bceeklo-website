@@ -253,7 +253,7 @@ section.blok h2{margin:0 0 8px;font-size:clamp(30px,4vw,40px);font-weight:700}
   if (!z) return;
   var M = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
   var d = new Date(z.datum + 'T12:00:00');
-  var dag = z.zitting.toLowerCase().indexOf('di') === 0 ? 'Dinsdagavond' : 'Woensdagnamiddag';
+  var dag = /-di$/.test(z.id) ? 'Dinsdagavond' : 'Woensdagnamiddag';
   var el = document.getElementById('laatste');
   el.querySelector('p+p').textContent = dag + ' ' + d.getDate() + ' ' + M[d.getMonth()] + ' · winnaars: ' + z.winnaar;
   el.querySelector('a').href = 'uitslagen.html#/' + z.id;
