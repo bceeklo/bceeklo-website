@@ -17,3 +17,13 @@
   from = "/verwerk"
   to = "/verwerk.html"
   status = 200
+
+# Oude testadres van de ledenzone
+[[redirects]]
+  from = "/ledenzone_test/*"
+  to = "/ledenzone/:splat"
+  status = 301
+[[redirects]]
+  from = "/ledenzone_test"
+  to = "/ledenzone/"
+  status = 301

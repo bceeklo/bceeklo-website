@@ -14,7 +14,7 @@
 <meta property="og:description" content="Recreatieve bridgeclub in Eeklo: dinsdagavond en woensdagnamiddag competitie.">
 <meta property="og:image" content="/assets/img/og-image.jpg">
 <link rel="stylesheet" href="/assets/site.css">
-<link rel="stylesheet" href="/ledenzone_test/lz.css">
+<link rel="stylesheet" href="/ledenzone/lz.css">
 <style>
 .mem{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:22px 18px;margin-top:8px}
 .mem figure{margin:0;text-align:center}
@@ -36,12 +36,13 @@
       <a href="/club.html">Onze club</a>
       <a href="/index.html#lessen">Bridge leren</a>
       <a href="/index.html#lid">Lid worden</a>
+      <a href="/ledenzone/" aria-current="page">Ledenzone</a>
       <a href="/index.html#contact">Contact</a>
     </nav>
   </div>
 </header>
 <main class="wrap">
-  <div class="lz-balk"><span class="lz-test">Ledenzone · testversie</span><div class="lz-wie" id="lz-wie"><span></span><button type="button">Afmelden</button></div></div>
+  <div class="lz-balk"><span></span><div class="lz-wie" id="lz-wie"><span></span><button type="button">Afmelden</button></div></div>
   <nav class="subnav" aria-label="Ledenzone" style="margin:0 0 4px"><a href="index.html">Overzicht</a><a href="ledenlijst.html">Ledenlijst</a><a href="fotos.html">Foto's</a><a href="in-our-minds.html" aria-current="page">In our minds</a><a href="/privacy.html">Privacy</a></nav>
   <h1 class="lz-titel">In our minds</h1>
   <p class="muted lz-intro">Ter nagedachtenis van de leden die ons ontvallen zijn.</p>
@@ -53,14 +54,14 @@
     <div>Vragen over de ledenzone?<br><a href="mailto:webmaster@bceeklo.be">webmaster@bceeklo.be</a></div>
   </div>
 </footer>
-<script src="/ledenzone_test/lz.js"></script>
-<script src="/ledenzone_test/data/inourminds.js"></script>
+<script src="/ledenzone/lz.js"></script>
+<script src="/ledenzone/data/inourminds.js"></script>
 <script>
 (function () {
   function esc(s) { return String(s || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   document.getElementById('mem').innerHTML = (window.IN_OUR_MINDS || []).map(function (p) {
     var init = p.naam.split(' ').filter(function (w) { return /^[A-Z]/.test(w); }).map(function (w) { return w[0]; });
-    var beeld = p.foto ? '<img loading="lazy" src="/ledenzone_test/img/inourminds/' + esc(p.foto) + '" alt="' + esc(p.naam) + '">'
+    var beeld = p.foto ? '<img loading="lazy" src="/ledenzone/img/inourminds/' + esc(p.foto) + '" alt="' + esc(p.naam) + '">'
       : '<span class="geenfoto" aria-hidden="true">' + esc(init[0] + (init[init.length - 1] || '')) + '</span>';
     return '<figure>' + beeld + '<figcaption><b>' + esc(p.naam) + '</b>' + (p.jaar ? '<span>† ' + esc(p.jaar) + '</span>' : '') + '</figcaption></figure>';
   }).join('');

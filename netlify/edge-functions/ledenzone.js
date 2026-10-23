@@ -1,4 +1,4 @@
-// Schermt bceeklo.be/ledenzone_test af: zonder geldige login (zie functions/ledenzone.mjs) -> naar de loginpagina.
+// Schermt bceeklo.be/ledenzone af: zonder geldige login (zie functions/ledenzone.mjs) -> naar de loginpagina.
 // De lijst wordt bij elk bezoek opnieuw gecontroleerd: wie geschrapt wordt, verliest meteen de toegang.
 const env = (n) => (globalThis.Netlify && Netlify.env.get(n)) || '';
 
@@ -32,4 +32,4 @@ export default async (req, context) => {
   return Response.redirect(new URL('/ledenzone-login.html?terug=' + encodeURIComponent(url.pathname), url), 302);
 };
 
-export const config = { path: ['/ledenzone_test', '/ledenzone_test/*'] };
+export const config = { path: ['/ledenzone', '/ledenzone/*'] };

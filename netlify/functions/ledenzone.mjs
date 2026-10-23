@@ -1,4 +1,4 @@
-// Ledenzone (TEST) — inloggen met Google + lijst van toegelaten adressen.
+// Ledenzone — inloggen met Google + lijst van toegelaten adressen.
 // Instellingen in Netlify › Environment variables:
 //   LEDENZONE_GOOGLE_CLIENT_ID  OAuth-client-ID uit Google Cloud (type "Web application")
 //   LEDENZONE_GEHEIM            lange willekeurige tekst om de login-cookie te ondertekenen

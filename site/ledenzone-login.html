@@ -37,13 +37,13 @@ main{padding-top:40px;padding-bottom:50px}
       <a href="club.html">Onze club</a>
       <a href="index.html#lessen">Bridge leren</a>
       <a href="index.html#lid">Lid worden</a>
+      <a href="ledenzone/">Ledenzone</a>
       <a href="index.html#contact">Contact</a>
     </nav>
   </div>
 </header>
 <main class="wrap">
   <div class="kaart">
-    <span class="test">Testversie</span>
     <h1>Ledenzone</h1>
     <p class="muted">Dit deel van de site is enkel voor leden van Bridgeclub Eeklo. Log in met je Google-account.</p>
     <p style="font-size:15px;margin:0"><a href="/privacy.html">Privacyverklaring</a></p>
@@ -60,8 +60,8 @@ main{padding-top:40px;padding-bottom:50px}
 <script>
 (function () {
   var melding = document.getElementById('melding');
-  var terug = new URLSearchParams(location.search).get('terug') || '/ledenzone_test/';
-  if (!/^\/ledenzone_test(\/|$)/.test(terug)) terug = '/ledenzone_test/';
+  var terug = new URLSearchParams(location.search).get('terug') || '/ledenzone/';
+  if (!/^\/ledenzone(\/|$)/.test(terug)) terug = '/ledenzone/';
   function toon(html, fout) { melding.innerHTML = '<div class="melding' + (fout ? ' fout' : '') + '">' + html + '</div>'; }
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   var API = '/.netlify/functions/ledenzone';

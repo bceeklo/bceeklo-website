@@ -1,4 +1,4 @@
-# Ledenzone (testversie) — bceeklo.be/ledenzone_test
+# Ledenzone — bceeklo.be/ledenzone
 
 Afgeschermd deel van de site: leden loggen in met hun **Google-account**; enkel adressen op de lijst krijgen toegang.
 Wie ingelogd is, blijft dat 180 dagen op dat toestel. De lijst wordt bij elk bezoek gecontroleerd:
@@ -7,9 +7,9 @@ wie geschrapt wordt, verliest meteen de toegang.
 ## Hoe het werkt
 - `site/ledenzone-login.html` — openbare loginpagina met de knop "Inloggen met Google".
 - `netlify/functions/ledenzone.mjs` — controleert het Google-antwoord en de adressenlijst en zet een ondertekende cookie.
-- `netlify/edge-functions/ledenzone.js` — houdt alles onder `/ledenzone_test/` tegen op de server zonder geldige login
+- `netlify/edge-functions/ledenzone.js` — houdt alles onder `/ledenzone/` tegen op de server zonder geldige login
   (ook pdf's en afbeeldingen in die map).
-- `site/ledenzone_test/` — de afgeschermde inhoud (nu enkel een testpagina).
+- `site/ledenzone/` — de afgeschermde inhoud (ledenlijst, foto's, In our minds).
 
 ## Eenmalig instellen
 
@@ -38,12 +38,12 @@ Bij voorkeur met een clubaccount, niet je persoonlijk account.
 Na het toevoegen of wijzigen: **Deploys › Trigger deploy** zodat de functies de nieuwe waarden zien.
 
 ## Testen
-1. Ga naar <https://bceeklo.be/ledenzone_test> → je komt op de loginpagina.
+1. Ga naar <https://bceeklo.be/ledenzone> → je komt op de loginpagina.
 2. Log in met een adres op de lijst → je ziet de testpagina met "Ingelogd als …".
 3. Log in met een adres dat niet op de lijst staat → melding "staat niet op de lijst".
-4. "Afmelden" werkt; daarna wordt `/ledenzone_test` opnieuw tegengehouden.
+4. "Afmelden" werkt; daarna wordt `/ledenzone` opnieuw tegengehouden.
 
 ## Later (definitieve versie)
 - Adressenlijst uit een Google Sheet in de clubmap halen, zodat het bestuur ze zelf bijhoudt.
-- Map hernoemen naar `/leden/` en een link in het menu zetten.
+- Albums toevoegen: `py tools/album_uit_pdf.py <presentatie.pdf> --datum JJJJ-MM-DD --titel "..."`.
 - Eventueel een tweede inlogmanier (inloglink per mail) voor leden zonder Google-account.

@@ -9,7 +9,7 @@ import argparse, glob, json, os, re, shutil, subprocess, tempfile
 from pathlib import Path
 from PIL import Image
 
-ZONE = Path(__file__).resolve().parent.parent / "site" / "ledenzone_test"
+ZONE = Path(__file__).resolve().parent.parent / "site" / "ledenzone"
 INDEX = ZONE / "data" / "albums.js"
 
 def slug(t):
