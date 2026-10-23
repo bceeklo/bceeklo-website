@@ -59,7 +59,7 @@
     Object.keys(geladen).forEach(function (k) { geladen[k].paren.forEach(function (p) { helften(p).forEach(voeg); }); });
     return m;
   }
-  var geladen = {};
+  var geladen = {}, alle = {}, alleVoor = null;
   function onthoud(reeks, z) { if (z) geladen[reeks + '/' + z.id] = z; return z; }
 
   function zoekPaar(z, sleutel) {
@@ -71,8 +71,8 @@
   }
 
   /* doorloop een reeks (nieuwste eerst) tot er genoeg treffers zijn */
-  function treffers(reeks, sleutel) {
-    var l = lijsten[reeks] || [], max = REEKS[reeks].max, uit = [], i = 0;
+  function treffers(reeks, sleutel, max) {
+    var l = lijsten[reeks] || [], uit = [], i = 0;
     function stap() {
       if (uit.length >= max || i >= l.length) return Promise.resolve(uit);
       var batch = l.slice(i, i + 6); i += 6;
@@ -106,7 +106,7 @@
   }
 
   function toonSpeler(sleutel, naam) {
-    res.innerHTML = '<h2 class="speler">' + esc(naam) + '</h2><p class="muted">Uitslagen opzoeken…</p>';
+    if (alleVoor !== sleutel) { alle = {}; alleVoor = sleutel; res.innerHTML = '<h2 class="speler">' + esc(naam) + '</h2><p class="muted">Uitslagen opzoeken…</p>'; }
     var rk = ['di', 'wo'].map(function (d) {
       var r = ranking[d]; if (!r) return '';
       var s = r.spelers.filter(function (x) { return plat(x.naam) === sleutel; })[0];
@@ -117,15 +117,35 @@
         '<span class="plaats"><b>' + (s.rang === 1 ? '<span class="goud">1</span>' : s.rang + (s.gedeeld ? '=' : '')) + '</b> / ' + r.spelers.length + '</span>' +
         '<span class="pct ' + pctKl(s.gem) + '">' + nl(s.gem, 2) + '%</span></a>';
     }).join('');
-    Promise.all(['club', 'kroeg', 'gilbert', 'recr'].map(function (r) { return treffers(r, sleutel); })).then(function (t) {
+    var reeksen = ['club', 'kroeg', 'gilbert', 'recr'];
+    Promise.all(reeksen.map(function (r) {
+      /* clubdrives: één extra zoeken om te weten of er meer zijn; toernooien zijn al geladen, dus alles tellen */
+      return treffers(r, sleutel, alle[r] ? Infinity : (r === 'club' ? REEKS[r].max + 1 : Infinity));
+    })).then(function (t) {
       if (plat(inp.value) && location.hash.slice(1) && decodeURIComponent(location.hash.slice(1)) !== naam) return;
-      function lijst(reeks, i, leeg) { return t[i].length ? t[i].map(function (x) { return rijHtml(reeks, x); }).join('') : '<p class="geen">' + leeg + '</p>'; }
+      function sectie(reeks, i, enkel, meervoud, leeg) {
+        var max = REEKS[reeks].max, rijen = t[i], meer = rijen.length > max;
+        if (!rijen.length) return leeg === null ? '' : blok(meervoud, '', '<p class="geen">' + leeg + '</p>');
+        var titel = alle[reeks] ? 'Alle ' + meervoud + ' (' + rijen.length + ')'
+          : (meer ? 'Laatste ' + max + ' ' + meervoud : (rijen.length === 1 ? enkel : meervoud + ' (' + rijen.length + ')'));
+        var knop = alle[reeks] ? '<button type="button" class="linkknop" data-minder="' + reeks + '">Toon minder</button>'
+          : (meer ? '<button type="button" class="linkknop" data-alle="' + reeks + '">Toon alle' + (reeks === 'club' ? '' : ' ' + rijen.length) + ' →</button>' : '');
+        var zicht = alle[reeks] ? rijen : rijen.slice(0, max);
+        return blok(titel, knop, zicht.map(function (x) { return rijHtml(reeks, x); }).join(''));
+      }
       res.innerHTML = '<h2 class="speler">' + esc(naam) + '</h2>' +
         blok('Ranking', '<a href="ranking.html">Volledige ranking →</a>', rk || '<p class="geen">Niet in de ranking van dit seizoen.</p>') +
-        blok('Laatste 5 clubdrives', '<a href="uitslagen.html">Alle clubdrives →</a>', lijst('club', 0, 'Geen clubdrives gevonden.')) +
-        blok('Laatste 3 Kroegendrives', '<a href="kroegendrive.html">Alle Kroegendrives →</a>', lijst('kroeg', 1, 'Nog geen Kroegendrive gespeeld.')) +
-        blok('Laatste 3 Drives Gilbert', '<a href="gilbert.html">Alle Drives Gilbert →</a>', lijst('gilbert', 2, 'Nog geen Drive Gilbert gespeeld.')) +
-        (t[3].length ? blok('Recreantentornooi', '<a href="recreanten.html">Alle uitslagen →</a>', lijst('recr', 3, '')) : '');
+        sectie('club', 0, 'Clubdrive', 'clubdrives', 'Geen clubdrives gevonden.') +
+        sectie('kroeg', 1, 'Kroegendrive', 'Kroegendrives', 'Nog geen Kroegendrive gespeeld.') +
+        sectie('gilbert', 2, 'Drive Gilbert', 'Drives Gilbert', 'Nog geen Drive Gilbert gespeeld.') +
+        sectie('recr', 3, 'Recreantentornooi', 'Recreantentornooien', null);
+      Array.prototype.forEach.call(res.querySelectorAll('[data-alle],[data-minder]'), function (b) {
+        b.onclick = function () {
+          var r = b.getAttribute('data-alle') || b.getAttribute('data-minder');
+          alle[r] = !!b.getAttribute('data-alle');
+          toonSpeler(sleutel, naam);
+        };
+      });
       document.title = naam + ' · Zoek op naam · Bridgeclub Eeklo';
     });
   }
